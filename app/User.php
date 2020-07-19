@@ -2,13 +2,28 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Collective\Html\Eloquent\FormAccessible;
+use App\Models\Auth\Traits\Method\UserMethod;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Auth\Traits\Attribute\UserAttribute;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Auth\Traits\Relationship\UserRelationship;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasRoles,
+        Notifiable,
+        UserAttribute,
+        UserMethod,
+        SoftDeletes,
+        UserRelationship;
+
+    public const TYPE_ADMIN = 1;
+    public const TYPE_USER = 2;
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +31,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password',
     ];
 
     /**
