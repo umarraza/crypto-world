@@ -49,3 +49,4 @@
 <script src="{{ asset('assets/js/pages/dashboard.js') }}" type="text/javascript"></script>
 <!--end::Page Scripts -->
 
+<script src="{{ asset('assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}" type="text/javascript"></script>

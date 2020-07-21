@@ -2,6 +2,7 @@
 
 namespace App\Models\Auth\Traits\Relationship;
 
+use App\Models\Profile;
 use App\Models\Auth\Role;
 use App\Models\Auth\PasswordHistory;
 
@@ -10,5 +11,7 @@ use App\Models\Auth\PasswordHistory;
  */
 trait UserRelationship
 {
-    // 
+    public function profile() {
+        return $this->hasOne(Profile::class);
+    } 
 }

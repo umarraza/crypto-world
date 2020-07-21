@@ -29,6 +29,5 @@ class RolesAndPermissionsSeeder extends Seeder
         $customer = User::find(2);
 
         $admin->assignRole(config('access.users.super_admin'));
-        $customer->assignRole(config('access.users.customer_role'));
     }
 }

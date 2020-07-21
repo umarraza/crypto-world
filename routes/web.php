@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
 
 /*
  * Global Routes
@@ -13,28 +14,14 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 
-/*
- * Admin Routes
- * Namespaces indicate folder structure
- */
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin', 'as' => 'admin.', 'middleware' => [config('access.users.super_admin')]], function () {
-    /*
-     * These routes need view-backend permission
-     * (good if you want to allow more than one group in the backend,
-     * then limit the backend features by different roles or permissions)
-     *
-     * Note: Administrator has all permissions so you do not have to specify the administrator role everywhere.
-     * These routes can not be hit if the password is expired
-     */
-    include_route_files(__DIR__.'/backend/');
-});
+Route::group(['middleware' => config('access.users.super_admin'), 'prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Auth\Admin'], function () {
+    Route::resource('user', 'UserController');
 
+    Route::get('confirm/{user}', ['uses' => 'UserConfirmationController@confirm', 'as' => 'user.confirm']);
+    Route::get('unconfirm/{user}', ['uses' => 'UserConfirmationController@unconfirm', 'as' => 'user.unconfirm']);
 
-/*
- * Frontend Routes
- * Namespaces indicate folder structure
- */
-Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
-    include_route_files(__DIR__.'/frontend/');
+    Route::get('active/{user}', ['uses' => 'UserActivationController@confirm', 'as' => 'user.active']);
+    Route::get('unactive/{user}', ['uses' => 'UserActivationController@unconfirm', 'as' => 'user.unactive']);
 });

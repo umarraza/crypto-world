@@ -22,14 +22,5 @@ class UserTableSeeder extends Seeder
             'confirmation_code' => md5(uniqid(mt_rand(), true)),
             'confirmed' => true,
         ]);
-
-        User::create([
-            'first_name' => 'Customer',
-            'last_name' => 'Admin',
-            'email' => 'customer@tracking.com',
-            'password' => Hash::make('secret'),
-            'confirmation_code' => md5(uniqid(mt_rand(), true)),
-            'confirmed' => true,
-        ]);
     }
 }

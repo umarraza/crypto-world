@@ -24,15 +24,13 @@
     <div class="kt-grid kt-grid--ver kt-grid--root">
         <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v4 kt-login--signin" id="kt_login">
             <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" style="background-image: url(assets/media/bg/bg-2.jpg);">
-                <div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
-                    @yield('content')
-                </div>
+                @yield('content')
             </div>
         </div>
     </div>
     <!-- Include scripts -->
     @include('layouts.includes.scripts')
-    @include('layouts.includes.partials.messages')
+    {{-- @include('layouts.includes.partials.messages') --}}
 
     <!--begin::Page Scripts(used by this page) -->
     <script src="assets/js/pages/custom/login/login-general.js" type="text/javascript"></script>

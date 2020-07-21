@@ -77,7 +77,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Tracking App
+                    Crypto World
                 </div>
             </div>
         </div>

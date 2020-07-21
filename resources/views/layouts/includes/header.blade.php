@@ -453,7 +453,7 @@
 
                 <!--begin: Navigation -->
                 <div class="kt-notification">
-                    <a href="{{ route('frontend.user.profile') }}" class="kt-notification__item">
+                    <a href="javascript::void(0)" class="kt-notification__item">
                         <div class="kt-notification__item-icon">
                             <i class="flaticon2-calendar-3 kt-font-success"></i>
                         </div>
@@ -467,7 +467,7 @@
                         </div>
                     </a>
                     <div class="kt-notification__custom kt-space-between">
-                        <a href="{{ route('frontend.user.logout') }}" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
+                        <a href="{{ route('logout') }}" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
                         <a href="custom/user/login-v2.html" target="_blank" class="btn btn-clean btn-sm btn-bold">Upgrade Plan</a>
                     </div>
                 </div>
