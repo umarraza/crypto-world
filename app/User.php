@@ -2,6 +2,8 @@
 
 namespace App;
 
+
+use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -31,7 +33,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'user_name','first_name', 'last_name', 'email','refferals', 'password',
+        'user_name','first_name', 'last_name', 'email','referred_by', 'payment', 'password',
     ];
 
     /**

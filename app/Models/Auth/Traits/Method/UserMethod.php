@@ -83,4 +83,13 @@ trait UserMethod
 
         return false;
     }
+
+    /**
+     * Check users refeerals count
+     * 
+     * @return int
+     */
+    public function refferalsCount() {
+        return $this->where('referred_by', $this->id)->count();
+    }
 }

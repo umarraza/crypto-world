@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProfilesTable extends Migration
+class CreatePaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,17 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
-        $sql = 'CREATE TABLE `profile` (
+        $sql = 'CREATE TABLE `payments` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `user_id` int(10) unsigned NOT NULL,
-            `mobile_number` varchar(191) DEFAULT NULL,
-            `birthday` varchar(191) DEFAULT NULL,
-            `street` varchar(191) DEFAULT NULL,
-            `city` varchar(191) DEFAULT NULL,
-            `post_code` varchar(191) DEFAULT NULL,
+            `current_balance` int(10) DEFAULT NULL,
+            `reference_bonus` varchar(191) DEFAULT NULL,
             `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
             `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
             PRIMARY KEY (`id`),
             KEY `user_id` (`user_id`),
-            CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-          ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4';
+            CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+          ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4';
 
         DB::connection()->getPdo()->exec($sql);
     }
@@ -38,6 +35,6 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('payments');
     }
 }

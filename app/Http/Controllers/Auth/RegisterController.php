@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Http\Request;
+use App\Models\Payment;
 use App\User;
 use App\Models\Profile;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use Illuminate\Support\Facades\Cookie;
+
 
 class RegisterController extends Controller
 {
@@ -52,7 +56,6 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'refferer_name' => ['required', 'string', 'max:255'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'mobile_number' => ['required', 'string', 'max:255'],
@@ -75,7 +78,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        DB::beginTransaction();
+         DB::beginTransaction();
 
         try {
             $user = User::create([
@@ -83,10 +86,14 @@ class RegisterController extends Controller
                 'last_name' => $data['last_name'],
                 'user_name' => $data['user_name'],
                 'email' => $data['email'],
+                'referred_by' => $this->refferedByUser(),
                 'password' => Hash::make($data['password']),
             ]);
 
             if($user) {
+                
+                Payment::create(['user_id' => $user->id,'current_balance' => $data['payment']]);
+
                 $profile = Profile::create([
                     'user_id' => $user->id,
                     'mobile_number' => $data['mobile_number'],
@@ -108,21 +115,19 @@ class RegisterController extends Controller
         DB::commit();
         return $user;
     }
+
+
+    /**
+     * @return int
+     */
+    private function refferedByUser() {
+
+        $referred_by = Cookie::get('referral');
+        $referred_by = explode(":",$referred_by);
+        $referred_by = $referred_by[1];
+        $referred_by = explode(";",$referred_by);
+        $referred_by = (int)$referred_by[0];
+        
+        return $referred_by;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

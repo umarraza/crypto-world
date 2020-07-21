@@ -64,18 +64,19 @@ class UserController extends Controller
      * @throws \App\Exceptions\GeneralException
      * @throws \Throwable
      */
-    public function store(StoreUserRequest $request)
+    public function store(Request $request)
     {
         $user = $this->userService->store($request->validated());
 
         return redirect()->route('admin.user.show', $user)->withFlashSuccess(__('The user was successfully created.'));
     }
 
+
      /**
      * @param  User  $user
      *
      * @return mixed
-     */
+     */ 
     public function show(User $user)
     {
         return view('admin.user.show')

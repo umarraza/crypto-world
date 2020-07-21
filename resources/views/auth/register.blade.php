@@ -12,17 +12,6 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
-                        <div class="form-group row">
-                            <div class="col-md-12">
-                                <label for="refferer_name" class="col-md-4 col-form-label">{{ __('Referrer Name') }}</label>
-                                <input id="refferer_name" type="text" class="form-control @error('refferer_name') is-invalid @enderror" name="refferer_name" value="{{ old('refferer_name') }}" autocomplete="name" autofocus>
-                                @error('refferer_name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
 
                         <div class="form-group row">
                             <div class="col-md-6">
@@ -106,10 +95,19 @@
                         </div>
 
                         <div class="form-group row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label for="user_name" class="col-md-4 col-form-label">{{ __('User Name') }}</label>
                                 <input id="user_name" type="text" class="form-control @error('user_name') is-invalid @enderror" name="user_name" value="{{ old('user_name') }}" autocomplete="name" autofocus>
                                 @error('user_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="payment" class="col-md-4 col-form-label">{{ __('Payment') }}</label>
+                                <input id="payment" type="number" class="form-control @error('payment') is-invalid @enderror" name="payment" value="{{ old('payment') }}" autocomplete="name" autofocus>
+                                @error('payment')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

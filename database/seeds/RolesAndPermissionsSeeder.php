@@ -14,7 +14,6 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Create Permissions
         $adminPermissions = Permission::create(['name' => 'view backend']);
-        $teacherPermissions = Permission::create(['name' => 'view frontend']);
 
         // Create Roles
         $admin = Role::create(['name' => config('access.users.super_admin')]);
@@ -22,12 +21,12 @@ class RolesAndPermissionsSeeder extends Seeder
    
         // assign permissions
         $admin->givePermissionTo(['view backend']);
-        $customer->givePermissionTo(['view frontend']);
 
         // assign roles
         $admin = User::find(1);
         $customer = User::find(2);
 
         $admin->assignRole(config('access.users.super_admin'));
+        $customer->assignRole(config('access.users.customer_role'));
     }
 }
