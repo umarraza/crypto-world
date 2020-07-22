@@ -14,6 +14,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Create Permissions
         $adminPermissions = Permission::create(['name' => 'view backend']);
+        $adminPermissions = Permission::create(['name' => 'payment management']);
 
         // Create Roles
         $admin = Role::create(['name' => config('access.users.super_admin')]);
@@ -21,6 +22,7 @@ class RolesAndPermissionsSeeder extends Seeder
    
         // assign permissions
         $admin->givePermissionTo(['view backend']);
+        $customer->givePermissionTo(['payment management']);
 
         // assign roles
         $admin = User::find(1);

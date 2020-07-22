@@ -92,4 +92,18 @@ trait UserMethod
     public function refferalsCount() {
         return $this->where('referred_by', $this->id)->count();
     }
+
+    /**
+     * Check users refeerals count
+     * 
+     * @return int
+     */
+    public function getRefferalBonus($refferalUserId) {
+        dd($refferalUserId);
+        $refferalUser = $this->find($refferalUserId);
+        dd($refferalUser);
+
+    }
+
+
 }

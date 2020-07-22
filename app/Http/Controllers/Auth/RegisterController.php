@@ -92,7 +92,8 @@ class RegisterController extends Controller
 
             if($user) {
                 
-                Payment::create(['user_id' => $user->id,'current_balance' => $data['payment']]);
+                Payment::create(['user_id' => $user->id,'current_balance' => $data['payment']]);                
+                $user->getRefferalBonus($this->refferedByUser(), $data['payment']);
 
                 $profile = Profile::create([
                     'user_id' => $user->id,

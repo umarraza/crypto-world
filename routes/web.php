@@ -21,12 +21,23 @@ Route::group(['namespace' => 'Auth\Admin'], function () {
     Route::post('save/save', [UserController::class, 'save'])->name('user.save');
 });
 
+// Admin Routes
 Route::group(['middleware' => config('access.users.super_admin'), 'prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Auth\Admin'], function () {
     Route::resource('user', 'UserController');
 
-    Route::get('confirm/{user}', ['uses' => 'UserConfirmationController@confirm', 'as' => 'user.confirm']);
-    Route::get('unconfirm/{user}', ['uses' => 'UserConfirmationController@unconfirm', 'as' => 'user.unconfirm']);
+    Route::get('confirm/{user}', 'UserConfirmationController@confirm')->name('user.confirm');
+    Route::get('unconfirm/{user}', 'UserConfirmationController@unconfirm')->name('user.unconfirm');
 
-    // Route::get('active/{user}', ['uses' => 'UserActivationController@confirm', 'as' => 'user.active']);
-    // Route::get('unactive/{user}', ['uses' => 'UserActivationController@unconfirm', 'as' => 'user.unactive']);
+    Route::get('active/{user}', 'UserActivationController@confirm')->name('user.active');
+    Route::get('unactive/{user}', 'UserActivationController@unactive')->name('user.unactive');
+});
+
+// Customer Routes
+Route::group(['middleware' => config('access.users.customer_role'), 'prefix' => 'user', 'as' => 'user.', 'namespace' => 'Auth'], function () {
+
+    Route::get('user/payment/withdraw', 'PaymentManagementController@withdraw')->name('payment.withdraw');
+    Route::get('user/payment/deposit', 'PaymentManagementController@deposit')->name('payment.deposit');
+
+    Route::post('user/payment/withdraw/amount', 'PaymentManagementController@withDrawAmount')->name('payment.withdraw.save');
+    Route::post('user/payment/deposit/amount', 'PaymentManagementController@depositAmount')->name('payment.deposit.save');
 });

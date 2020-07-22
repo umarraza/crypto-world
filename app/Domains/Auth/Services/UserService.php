@@ -364,4 +364,63 @@ class UserService extends BaseService
         throw new GeneralException(__('User cannot be un-confirm'));
     }
 
+    /**
+     * @param User $user
+     *
+     * @throws GeneralException
+     * @return User
+     */
+    public function unactivate(User $user) : User
+    {
+        if (! $user->active) {
+            throw new GeneralException(__('This user is not active.'));
+        }
+
+        if ($user->id === 1) {
+            // Cant un-confirm admin
+            throw new GeneralException(__('You can not un-active the super administrator.'));
+        }
+
+        if ($user->id === auth()->id()) {
+            // Cant un-confirm self
+            throw new GeneralException(__('You can not un-active yourself.'));
+        }
+
+        $user->active = false;
+        $unactive = $user->save();
+
+        if ($unactive) {
+            return $user;
+        }
+
+        throw new GeneralException(__('User cannot be un-active'));
+    }
+
+    /**
+     * @param User $user
+     *
+     * @throws GeneralException
+     * @return User
+     */
+    public function active(User $user) : User
+    {
+        if ($user->active) {
+
+            throw new GeneralException(__('This user is already active.'));
+        }
+
+        $user->active = true;
+        $active = $user->save();
+
+        if ($active) {
+            // Let user know their account was approved
+            if (config('access.users.requires_approval')) {
+                $user->notify(new UserAccountActive);
+            }
+
+            return $user;
+        }
+
+        throw new GeneralException(__('There was a problem activating the user account.'));
+    }
 }

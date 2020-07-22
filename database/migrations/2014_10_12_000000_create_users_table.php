@@ -13,28 +13,33 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('user_name')->nullable();
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->string('email')->unique();
-            $table->string('referred_by')->nullable();
-            $table->string('avatar_type')->default('gravatar');
-            $table->string('avatar_location')->nullable();
-            $table->string('password')->nullable();
-            $table->timestamp('password_changed_at')->nullable();
-            $table->unsignedTinyInteger('active')->default(1);
-            $table->string('confirmation_code')->nullable();
-            $table->boolean('confirmed')->default(config('access.users.confirm_email') ? false : true);
-            $table->string('timezone')->nullable();
-            $table->timestamp('last_login_at')->nullable();
-            $table->string('last_login_ip')->nullable();
-            $table->boolean('to_be_logged_out')->default(false);
-            $table->rememberToken();
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        $sql = 'CREATE TABLE `users` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `user_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `first_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `last_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+            `referred_by` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `avatar_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT "gravatar",
+            `avatar_location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `password_changed_at` timestamp NULL DEFAULT NULL,
+            `active` tinyint(3) unsigned NOT NULL DEFAULT 1,
+            `confirmation_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `confirmed` tinyint(1) NOT NULL DEFAULT 1,
+            `timezone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `last_login_at` timestamp NULL DEFAULT NULL,
+            `last_login_ip` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `to_be_logged_out` tinyint(1) NOT NULL DEFAULT 0,
+            `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `created_at` timestamp NULL DEFAULT NULL,
+            `updated_at` timestamp NULL DEFAULT NULL,
+            `deleted_at` timestamp NULL DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `users_email_unique` (`email`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
+
+        DB::connection()->getPdo()->exec($sql);
     }
 
     /**

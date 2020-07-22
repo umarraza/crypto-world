@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class AdminAuth
+class CustomerAuth
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class AdminAuth
     {
         $logged_in_user = Auth::user();
 
-        if ($logged_in_user->isAdmin()) {
+        if ($logged_in_user->isCustomer()) {
             return $next($request);
         }
 

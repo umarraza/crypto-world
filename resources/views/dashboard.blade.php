@@ -7,7 +7,8 @@
             <!--begin:: Widgets/Activity-->
             @auth
                 @if (auth()->user()->refferalsCount() <= 6)
-                    <input type="text" readonly="readonly" value="{{ url('/') . '/?ref=' . encrypt(auth()->user()->id) }}">
+                    <h4>Refferal Link<h4/>
+                    <input type="text" class="form-control mb-5" readonly value="{{ url('/') . '/?ref=' . encrypt(auth()->user()->id) }}">
                 @endif
             @endauth
             <div class="kt-portlet kt-portlet--fit kt-portlet--head-lg kt-portlet--head-overlay kt-portlet--skin-solid kt-portlet--height-fluid">

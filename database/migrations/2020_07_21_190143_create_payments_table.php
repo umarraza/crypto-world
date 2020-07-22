@@ -16,6 +16,7 @@ class CreatePaymentsTable extends Migration
         $sql = 'CREATE TABLE `payments` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `user_id` int(10) unsigned NOT NULL,
+            `payment_date` timestamp NULL DEFAULT NULL,
             `current_balance` int(10) DEFAULT NULL,
             `reference_bonus` varchar(191) DEFAULT NULL,
             `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),

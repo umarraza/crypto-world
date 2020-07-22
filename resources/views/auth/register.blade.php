@@ -104,15 +104,6 @@
                                     </span>
                                 @enderror
                             </div>
-                            <div class="col-md-6">
-                                <label for="payment" class="col-md-4 col-form-label">{{ __('Payment') }}</label>
-                                <input id="payment" type="number" class="form-control @error('payment') is-invalid @enderror" name="payment" value="{{ old('payment') }}" autocomplete="name" autofocus>
-                                @error('payment')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
                         </div>
 
                         <div class="form-group row">
