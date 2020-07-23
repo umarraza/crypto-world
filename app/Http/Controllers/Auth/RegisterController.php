@@ -92,8 +92,8 @@ class RegisterController extends Controller
 
             if($user) {
                 
-                Payment::create(['user_id' => $user->id,'current_balance' => $data['payment']]);                
-                $user->getRefferalBonus($this->refferedByUser(), $data['payment']);
+                Payment::create(['user_id' => $user->id,'current_balance' => Payment::DEFAULT_BALANCE_ZERO]);                
+                // $user->getRefferalBonus($this->refferedByUser(), $data['payment']);
 
                 $profile = Profile::create([
                     'user_id' => $user->id,
@@ -125,9 +125,10 @@ class RegisterController extends Controller
 
         $referred_by = Cookie::get('referral');
         $referred_by = explode(":",$referred_by);
-        $referred_by = $referred_by[1];
+        $referred_by = $referred_by[2];
         $referred_by = explode(";",$referred_by);
-        $referred_by = (int)$referred_by[0];
+        $referred_by = explode('"',$referred_by[0]);
+        $referred_by = (int)$referred_by[1];
         
         return $referred_by;
     }

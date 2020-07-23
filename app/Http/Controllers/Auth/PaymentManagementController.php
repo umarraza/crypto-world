@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Payment;
+use App\Models\PaymentRequest;
 use App\Http\Requests\Auth\WithdrawPaymentRequest;
 use App\Http\Requests\Auth\DepositPaymentRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PaymentManagementController extends Controller
 {
@@ -15,9 +17,10 @@ class PaymentManagementController extends Controller
      *
      * @param  Payment  $payment
      */
-    public function __construct(Payment $payment)
+    public function __construct(Payment $payment, PaymentRequest $paymentRequest)
     {
         $this->payment = $payment;
+        $this->paymentRequest = $paymentRequest;
     }
 
     /**
@@ -36,9 +39,10 @@ class PaymentManagementController extends Controller
      */
     public function withDrawAmount(WithdrawPaymentRequest $request) {
 
-        $payment = $this->payment->withdraw($request->validated());
+        $paymentRequest = $this->paymentRequest->withdraw($request->validated());
 
-        return redirect()->route('home')->withFlashSuccess(__('The payment was withdrawn successfully.'));
+        // $payment = $this->payment->withdraw($request->validated());
+        return redirect()->route('home')->withFlashSuccess(__('Your rqeuest to withdraw payment sent successfully.'));
     }
 
     /**
@@ -60,5 +64,21 @@ class PaymentManagementController extends Controller
         $payment = $this->payment->store($request->validated());
 
         return redirect()->route('home')->withFlashSuccess(__('The payment was deposited successfully.'));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function withdrawHistory() {
+        return view('auth.payment.history.withdraw')
+            ->withPaymentRequests(Auth::user()->paymentHistory->where('type', PaymentRequest::WITHDRAW));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function depositHistory() {
+        return view('auth.payment.history.deposit')
+            ->withPaymentRequests(Auth::user()->paymentHistory->where('type', PaymentRequest::DEPOSIT));
     }
 }

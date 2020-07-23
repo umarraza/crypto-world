@@ -10,6 +10,9 @@ use DB;
 
 class Payment extends Model
 {
+    public const PAID = 1;
+    public const DEFAULT_BALANCE_ZERO = 0;
+
     /**
      * The table associated with the model.
      *
@@ -22,7 +25,7 @@ class Payment extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'payment_date', 'current_balance', 'reference_bonus'];
+    protected $fillable = ['user_id', 'payment_date', 'current_balance', 'reference_bonus', 'payment_status'];
 
     /**
      * @return string
@@ -43,12 +46,19 @@ class Payment extends Model
         DB::beginTransaction();
 
         try {
-            $payment = parent::create([
-                'user_id' => Auth::user()->id,
-                'current_balance' => $data['deposit_amount'],
-                'payment_date' => date('Y-m-d'),
-            ]);
-        
+
+            $user = Auth::user();
+            $payment = parent::where('user_id', $user->id)->first();
+
+            $payment->current_balance += $data['deposit_amount'];
+            $payment->payment_date = date('Y-m-d');
+            
+            if ($user->payment_status === self::DEFAULT_BALANCE_ZERO) {
+                $user->payment_status = self::PAID;
+                $user->save();
+            }
+
+            $payment->save();
         } catch (Exception $e) {
             DB::rollBack();
 

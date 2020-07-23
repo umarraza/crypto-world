@@ -106,6 +106,7 @@
                             </div>
                         </div>
 
+
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <label for="password" class="col-md-4 col-form-label">{{ __('Password') }}</label>

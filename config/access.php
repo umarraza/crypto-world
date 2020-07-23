@@ -13,6 +13,7 @@ return [
     
     // Whether or not registration is enabled
     'registration' => env('ENABLE_REGISTRATION', true),
+    'two_factor_auth' => 'twofactor',
 
     // Configurations for the user
     'users' => [

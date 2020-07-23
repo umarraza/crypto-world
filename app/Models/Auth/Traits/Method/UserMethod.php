@@ -99,11 +99,29 @@ trait UserMethod
      * @return int
      */
     public function getRefferalBonus($refferalUserId) {
-        dd($refferalUserId);
-        $refferalUser = $this->find($refferalUserId);
-        dd($refferalUser);
-
+        // 
     }
 
+    /**
+     * Generate two factor authentication code
+     * 
+     * @return int
+     */
+    public function generateTwoFactorCode() {
+        $this->timestamps = false;
+        $this->two_factor_code = rand(100000, 999999);
+        $this->save();
+    }
 
+    /**
+     * Reset two factor authentication code
+     * 
+     * @return int
+     */
+    public function resetTwoFactorCode()
+    {
+        $this->timestamps = false;
+        $this->two_factor_code = null;
+        $this->save();
+    }
 }

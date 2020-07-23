@@ -20,9 +20,11 @@ class CreateUsersTable extends Migration
             `last_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
             `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
             `referred_by` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `payment_status` tinyint(2) DEFAULT 0,
             `avatar_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT "gravatar",
             `avatar_location` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
             `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+            `two_factor_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
             `password_changed_at` timestamp NULL DEFAULT NULL,
             `active` tinyint(3) unsigned NOT NULL DEFAULT 1,
             `confirmation_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -37,7 +39,7 @@ class CreateUsersTable extends Migration
             `deleted_at` timestamp NULL DEFAULT NULL,
             PRIMARY KEY (`id`),
             UNIQUE KEY `users_email_unique` (`email`)
-          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
+          ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci';
 
         DB::connection()->getPdo()->exec($sql);
     }
