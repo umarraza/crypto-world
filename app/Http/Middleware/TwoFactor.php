@@ -16,7 +16,6 @@ class TwoFactor
     public function handle($request, Closure $next)
     {
         $user = auth()->user();
-
         if(auth()->check() && $user->two_factor_code)
         {
             if(!$request->is('verify*'))

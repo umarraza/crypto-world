@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\TwoFactorCode;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -28,7 +29,18 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
+    protected function redirectTo() {
+        $logged_in_user = Auth::user();
+
+        if ($logged_in_user->isAdmin()) {
+            return route('admin.home');
+        }
+
+        if ($logged_in_user->isCustomer()) {
+            return route('user.home');
+        }
+    }
 
     /**
      * Create a new controller instance.
@@ -45,9 +57,9 @@ class LoginController extends Controller
      *
      * @return void
      */
-    // protected function authenticated(Request $request, $user)
-    // {
-    //     $user->generateTwoFactorCode();
-    //     $user->notify(new TwoFactorCode());
-    // }
+    protected function authenticated(Request $request, $user)
+    {
+        $user->generateTwoFactorCode();
+        $user->notify(new TwoFactorCode());
+    }
 }

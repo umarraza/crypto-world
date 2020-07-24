@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -21,7 +22,19 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public static function home() {
+
+        $logged_in_user = Auth::user();
+
+        if ($logged_in_user->isAdmin()) {
+            return route('admin.home');
+        }
+
+        if ($logged_in_user->isCustomer()) {
+            return route('user.home');
+        }
+    }
+
 
     /**
      * Define your route model bindings, pattern filters, etc.

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use App\Notifications\TwoFactorCode;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -26,7 +27,7 @@ class TwoFactorController extends Controller
         {
             $user->resetTwoFactorCode();
 
-            return redirect()->route('home');
+            return redirect()->route('user.home');
         }
 
         return redirect()->back()

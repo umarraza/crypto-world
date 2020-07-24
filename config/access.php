@@ -29,6 +29,7 @@ return [
 
         // The default role all new registered users get added to
         'default_role' => 'user',
+        'guest_user' => 'guest',
 
 
         // Login username to be used by the controller.
