@@ -28,37 +28,46 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 // Admin Routes
-Route::group(['middleware' => config('access.users.super_admin'), 'prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Auth\Admin'], function () {
+Route::group(
+        [
+            'middleware' => config('access.users.super_admin'), 
+            'prefix' => 'admin', 'as' => 'admin.', 
+            'namespace' => 'Auth\Admin'
+        ], function () {
+    
     Route::get('home', [HomeController::class, 'index'])->name('home');
     
     Route::resource('user', 'UserController');
 
-    Route::get('confirm/{user}', 'UserConfirmationController@confirm')->name('user.confirm');
-    Route::get('unconfirm/{user}', 'UserConfirmationController@unconfirm')->name('user.unconfirm');
-
     Route::get('active/{user}', 'UserActivationController@confirm')->name('user.active');
     Route::get('unactive/{user}', 'UserActivationController@unactivate')->name('user.unactive');
 
-    Route::get('user/payment/withdraw/requests', 'PaymentRequestController@withdrawRequests')->name('payment.withdraw.requests');
-    Route::get('user/payment/withdraw/request/accept', 'PaymentRequestController@withdrawRequestAction')->name('payment.withdraw.request.action');
+    Route::get('confirm/{user}', 'UserConfirmationController@confirm')->name('user.confirm');
+    Route::get('unconfirm/{user}', 'UserConfirmationController@unconfirm')->name('user.unconfirm');
 
     Route::get('payment/deposit/history', 'PaymentManagementController@depositHistory')->name('payment.deposit.history');
     Route::get('payment/withdraw/history', 'PaymentManagementController@withdrawHistory')->name('payment.withdraw.history');
+
+    Route::get('user/payment/withdraw/requests', 'PaymentRequestController@withdrawRequests')->name('payment.withdraw.requests');
+    Route::get('user/payment/withdraw/request/accept', 'PaymentRequestController@withdrawRequestAction')->name('payment.withdraw.request.action');
 });
 
 // Customer Routes
-// Route::group(['middleware' => config('access.users.customer_role'), 'prefix' => 'user', 'as' => 'user.', 'namespace' => 'Auth'], function () {
-Route::group(['middleware' => [config('access.users.customer_role'),config('access.two_factor_auth')], 'prefix' => 'user', 'as' => 'user.', 'namespace' => 'Auth'], function () {
+Route::group(
+        [
+            'middleware' => [config('access.users.customer_role'),config('access.two_factor_auth')], 
+            'prefix' => 'user', 'as' => 'user.', 
+            'namespace' => 'Auth'
+        ], function () {
 
     Route::get('home', [HomeController::class, 'index'])->name('home');
 
     Route::get('user/payment/withdraw', 'PaymentManagementController@withdraw')->name('payment.withdraw');
     Route::get('user/payment/deposit', 'PaymentManagementController@deposit')->name('payment.deposit');
 
-    Route::post('user/payment/withdraw/amount', 'PaymentManagementController@withDrawAmount')->name('payment.withdraw.save');
-    Route::post('user/payment/deposit/amount', 'PaymentManagementController@depositAmount')->name('payment.deposit.save');
-
-
     Route::get('payment/deposit/history', 'PaymentManagementController@depositHistory')->name('payment.deposit.history');
     Route::get('payment/withdraw/history', 'PaymentManagementController@withdrawHistory')->name('payment.withdraw.history');
+
+    Route::post('user/payment/withdraw/amount', 'PaymentManagementController@withDrawAmount')->name('payment.withdraw.save');
+    Route::post('user/payment/deposit/amount', 'PaymentManagementController@depositAmount')->name('payment.deposit.save');
 });
