@@ -27,13 +27,20 @@ class User extends Authenticatable
     public const TYPE_ADMIN = 1;
     public const TYPE_USER = 2;
 
+    public const LEVEL_ONE = 1;
+    public const LEVEL_TWO = 2;
+    public const LEVEL_THREE = 3;
+    public const LEVEL_FOUR = 4;
+    public const LEVEL_FIVE = 5;
+    public const LEVEL_SIX = 6;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'user_name','first_name', 'last_name', 'email','referred_by', 'payment_status', 'password','two_factor_code',
+        'user_name','first_name', 'last_name', 'email','referred_by','original_reffered_by','payment_status', 'password','two_factor_code',
     ];
 
     /**

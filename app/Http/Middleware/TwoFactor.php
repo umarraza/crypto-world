@@ -20,7 +20,7 @@ class TwoFactor
         {
             if(!$request->is('verify*'))
             {
-                return redirect()->route('verify.index');
+                return redirect()->route('verify.index')->withMessage('The two factor code has been sent');
             }
         }
         return $next($request);

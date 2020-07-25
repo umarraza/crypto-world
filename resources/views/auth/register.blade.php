@@ -1,9 +1,6 @@
 @extends('layouts.guest')
 
 @section('content')
-{{-- @if ($errors->any())
-    {{ dd($errors) }}
-@endif --}}
 <div class="container" style="position: relative; top:7%">
     <div class="row justify-content-center">
         <div class="col-md-12">

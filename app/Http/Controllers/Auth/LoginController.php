@@ -29,7 +29,6 @@ class LoginController extends Controller
      *
      * @var string
      */
-    // protected $redirectTo = RouteServiceProvider::HOME;
     protected function redirectTo() {
         $logged_in_user = Auth::user();
 
@@ -59,7 +58,9 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        $user->generateTwoFactorCode();
-        $user->notify(new TwoFactorCode());
+        if (!$user->isAdmin()) {
+            $user->generateTwoFactorCode();
+            $user->notify(new TwoFactorCode());
+        }
     }
 }

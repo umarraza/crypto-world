@@ -7,6 +7,8 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\User;
+use App\Exceptions\GeneralException;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Profile;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -35,7 +37,17 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected function redirectTo() {
+        $logged_in_user = Auth::user();
+
+        if ($logged_in_user->isAdmin()) {
+            return route('admin.home');
+        }
+
+        if ($logged_in_user->isCustomer()) {
+            return route('user.home');
+        }
+    }
 
     /**
      * Create a new controller instance.
@@ -78,30 +90,70 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-         DB::beginTransaction();
+        DB::beginTransaction();
 
+        $index = 0;     
+        $level = 0;
+        $power = 0;
+        $counter = 1;
+        $userIds = [$this->refferedByUser()];
+        $found = false;
+        while ($found == false) {
+
+            $users = User::where('referred_by', $userIds[$index])->where('payment_status', Payment::PAID)->get(); // ali & numan
+            $count = $users->count();
+
+            if ($count < 2) {
+                $found = true;
+                $refferdById = $userIds[$index]; // searched user will be the reffered by user of new user
+
+                return $this->registerUser($data,$refferdById);
+            } else {
+
+                $ids = User::where('referred_by', $userIds[$index])->where('payment_status', Payment::PAID)->pluck('id')->toArray(); // ali & numan
+                
+                $userIds = array_merge($userIds, $ids);
+                $index++;
+            }
+
+            $counter++; 
+
+            if ($counter > 2 * $power) {
+                $power++;
+                $level++;
+                $counter = 1;
+            }
+    
+            if ($level == 6) {
+                $found = true;
+                throw new GeneralException(__('Refferals limit reached against your refferal. Please contact your refferal.'));
+            }
+        }
+    }
+
+    private function registerUser(array $data,$refferdById) {
         try {
             $user = User::create([
-                'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'user_name' => $data['user_name'],
-                'email' => $data['email'],
-                'referred_by' => $this->refferedByUser(),
-                'password' => Hash::make($data['password']),
+                'first_name'    => $data['first_name'],
+                'last_name'     => $data['last_name'],
+                'user_name'     => $data['user_name'],
+                'email'         => $data['email'],
+                'referred_by'   => $refferdById,
+                'original_reffered_by' => $this->refferedByUser(),
+                'password'      => Hash::make($data['password']),
             ]);
 
             if($user) {
                 
                 Payment::create(['user_id' => $user->id,'current_balance' => Payment::DEFAULT_BALANCE_ZERO]);                
-                // $user->getRefferalBonus($this->refferedByUser(), $data['payment']);
 
                 $profile = Profile::create([
-                    'user_id' => $user->id,
+                    'user_id'       => $user->id,
                     'mobile_number' => $data['mobile_number'],
-                    'birthday' => $data['birthday'],
-                    'street' => $data['street'],
-                    'city' => $data['city'],
-                    'post_code' => $data['post_code'],
+                    'birthday'      => $data['birthday'],
+                    'street'        => $data['street'],
+                    'city'          => $data['city'],
+                    'post_code'     => $data['post_code'],
                 ]);
             }
 
@@ -123,13 +175,9 @@ class RegisterController extends Controller
      */
     private function refferedByUser() {
 
-        $referred_by = Cookie::get('referral');
-        $referred_by = explode(":",$referred_by);
-        $referred_by = $referred_by[2];
-        $referred_by = explode(";",$referred_by);
-        $referred_by = explode('"',$referred_by[0]);
-        $referred_by = (int)$referred_by[1];
-        
-        return $referred_by;
+        if ($_COOKIE['referral'] !== NULL) {
+            return (int)$_COOKIE['referral'];
+        }
+        throw new GeneralException(__('Somethiing went wrong while registration. Please try again latter.'));
     }
 }

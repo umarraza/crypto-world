@@ -5,6 +5,7 @@ namespace App\Models\Auth\Traits\Method;
 use DB;
 use App\User;
 use Carbon\Carbon;
+use App\Models\Payment;
 use App\Models\Auth\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -123,5 +124,15 @@ trait UserMethod
         $this->timestamps = false;
         $this->two_factor_code = null;
         $this->save();
+    }
+
+    public static function getUsersByRole($type){
+        $modelRole = Role::findByType($type);
+        if(!empty($modelRole)){
+            return self::join('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+                ->where('users.payment_status','=',Payment::DEFAULT_BALANCE_ZERO)
+                ->where('role_id','=',$modelRole->id)->get();
+        }
+        return [];
     }
 }

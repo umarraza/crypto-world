@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use CoinGate\CoinGate;
 use App\Models\Payment;
 use App\Models\PaymentRequest;
 use App\Http\Requests\Auth\WithdrawPaymentRequest;
@@ -40,8 +41,6 @@ class PaymentManagementController extends Controller
     public function withDrawAmount(WithdrawPaymentRequest $request) {
 
         $paymentRequest = $this->paymentRequest->withdraw($request->validated());
-
-        // $payment = $this->payment->withdraw($request->validated());
         return redirect()->route('home')->withFlashSuccess(__('Your rqeuest to withdraw payment sent successfully.'));
     }
 

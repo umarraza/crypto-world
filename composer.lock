@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c33ebe925fa413e8621dc7cd50a0eddd",
+    "content-hash": "d9de7e01298140f33b06653009a1f20a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -103,6 +103,56 @@
                 "math"
             ],
             "time": "2020-04-15T15:59:35+00:00"
+        },
+        {
+            "name": "coingate/coingate-php",
+            "version": "3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/coingate/coingate-php.git",
+                "reference": "df2ed981219e38557f88a7569c841cb252bed9c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/coingate/coingate-php/zipball/df2ed981219e38557f88a7569c841cb252bed9c0",
+                "reference": "df2ed981219e38557f88a7569c841cb252bed9c0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.8.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CoinGate\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CoinGate and contributors",
+                    "homepage": "https://github.com/coingate/coingate-php/graphs/contributors"
+                }
+            ],
+            "description": "CoinGate library for PHP",
+            "homepage": "https://coingate.com",
+            "keywords": [
+                "altcoin",
+                "bitcoin",
+                "coingate",
+                "gateway",
+                "litecoin",
+                "merchant",
+                "payment"
+            ],
+            "time": "2019-02-26T09:46:31+00:00"
         },
         {
             "name": "divineomega/do-file-cache",

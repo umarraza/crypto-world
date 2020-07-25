@@ -30,7 +30,7 @@
     </div>
     <!-- Include scripts -->
     @include('layouts.includes.scripts')
-    {{-- @include('layouts.includes.partials.messages') --}}
+    @include('layouts.includes.partials.messages')
 
     <!--begin::Page Scripts(used by this page) -->
     <script src="assets/js/pages/custom/login/login-general.js" type="text/javascript"></script>
