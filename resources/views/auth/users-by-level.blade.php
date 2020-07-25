@@ -20,9 +20,8 @@
                         <tr>
                             <th>@lang('First Name')</th>
                             <th>@lang('Last Name')</th>
+                            <th>@lang('Original Refferar Name')</th>
                             <th>@lang('Email')</th>
-                            <th>@lang('Role')</th>
-                            <th>@lang('Last Updated')</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,9 +29,8 @@
                         <tr>
                             <td>{{ $user->first_name }}</td>
                             <td>{{ $user->last_name }}</td>
+                            <td>{{ $user->originalReffereName($user->original_reffered_by) }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{!! $user->roles_label !!}</td>
-                            <td>{{ $user->updated_at->diffForHumans() }}</td>
                         </tr>
                         @endforeach
                     </tbody>

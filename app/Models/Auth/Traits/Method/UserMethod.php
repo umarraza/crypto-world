@@ -135,4 +135,11 @@ trait UserMethod
         }
         return [];
     }
+
+    public function originalReffereName($id) {
+        if ($id) {
+            return $this->find($id)->name;
+        }
+        return '';
+    }
 }

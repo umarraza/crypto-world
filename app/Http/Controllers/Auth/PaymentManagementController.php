@@ -41,7 +41,7 @@ class PaymentManagementController extends Controller
     public function withDrawAmount(WithdrawPaymentRequest $request) {
 
         $paymentRequest = $this->paymentRequest->withdraw($request->validated());
-        return redirect()->route('home')->withFlashSuccess(__('Your rqeuest to withdraw payment sent successfully.'));
+        return redirect()->route('user.home')->withFlashSuccess(__('Your rqeuest to withdraw payment sent successfully.'));
     }
 
     /**
@@ -62,7 +62,7 @@ class PaymentManagementController extends Controller
 
         $payment = $this->payment->store($request->validated());
 
-        return redirect()->route('home')->withFlashSuccess(__('The payment was deposited successfully.'));
+        return redirect()->route('user.home')->withFlashSuccess(__('The payment was deposited successfully.'));
     }
 
     /**
