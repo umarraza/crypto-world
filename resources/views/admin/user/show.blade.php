@@ -33,6 +33,10 @@
                                             <td>{{ $user->full_name }}</td>
                                         </tr>
                                         <tr>
+                                            <th>@lang('User Name')</th>
+                                            <td>{{ $user->user_name }}</td>
+                                        </tr>
+                                        <tr>
                                             <th>@lang('Email')</th>
                                             <td>{{ $user->email }}</td>
                                         </tr>
@@ -74,6 +78,7 @@
                     </div>
                 </div>
             </div>
+        <a href="{{ route('admin.user.index') }}" class="btn btn-sm btn-primary" type="submit">@lang('Bsck to List')</a>
         </div>
     </div>
 </div>

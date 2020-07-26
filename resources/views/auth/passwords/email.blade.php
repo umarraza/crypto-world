@@ -7,9 +7,9 @@
             <div class="card">
                 <div class="card-header">{{ __('Reset Password') }}</div>
 
-                <div class="card-body">
+                <div class="card-body mt-2">
                     @if (session('status'))
-                        <div class="alert alert-success" role="alert">
+                        <div class="alert alert-primary" role="alert">
                             {{ session('status') }}
                         </div>
                     @endif
@@ -36,6 +36,9 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Send Password Reset Link') }}
                                 </button>
+                                <a href="{{ route('login') }}" class="btn btn-danger">
+                                    {{ __('Cancel') }}
+                                </a >
                             </div>
                         </div>
                     </form>

@@ -25,3 +25,6 @@
     <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
 
     <link href="{{ asset('assets/media/logos/favicon.ico') }}" rel="shortcut icon" />
+
+    <!--Custom Styles -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css" />

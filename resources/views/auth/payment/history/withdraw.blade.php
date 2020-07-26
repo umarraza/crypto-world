@@ -17,18 +17,18 @@
                 <table class="table table-striped- table-bordered table-hover table-checkable table-data_table" >
                     <thead>
                         <tr>
-                            <th>@lang('Name')</th>
-                            <th>@lang('Amount')</th>
                             <th>@lang('Date')</th>
+                            <th>@lang('Amount')</th>
+                            <th>@lang('Wallet ID')</th>
                             <th>@lang('Status')</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($paymentRequests as $request)
                         <tr>
-                            <td>{{ $request->user->name }}</td>
-                            <td>{{ $request->amount }}</td>
                             <td>{{ $request->date }}</td>
+                            <td>{{ $request->amount }}</td>
+                            <td>123456</td>
                             <td>{!! $request->status_label !!}</td>
                         </tr>
                         @endforeach

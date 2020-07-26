@@ -28,10 +28,9 @@
                 <table class="table table-striped- table-bordered table-hover table-checkable table-data_table" >
                     <thead>
                         <tr>
-                            <th>@lang('First Name')</th>
-                            <th>@lang('Last Name')</th>
+                            <th>@lang('Name')</th>
                             <th>@lang('Email')</th>
-                            <th>@lang('Confirmed')</th>
+                            {{-- <th>@lang('Confirmed')</th> --}}
                             <th>@lang('Active')</th>
                             <th>@lang('Role')</th>
                             <th>@lang('Last Updated')</th>
@@ -40,10 +39,9 @@
                     <tbody>
                         @foreach($users as $user)
                         <tr>
-                            <td>{{ $user->first_name }}</td>
-                            <td>{{ $user->last_name }}</td>
+                            <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>@include('admin.user.includes.confirm', ['user' => $user])</td>
+                            {{-- <td>@include('admin.user.includes.confirm', ['user' => $user])</td> --}}
                             <td>@include('admin.user.includes.active', ['user' => $user])</td>
                             <td>{!! $user->roles_label !!}</td>
                             <td>{{ $user->updated_at->diffForHumans() }}</td>

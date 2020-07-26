@@ -16,8 +16,8 @@ class CreatePaymentRequestsTable extends Migration
         $sql = 'CREATE TABLE `payment_requests` (
             `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
             `user_id` int(10) unsigned NOT NULL,
-            `amount` decimal(10,0) DEFAULT NULL,
-            `date` varchar(191) DEFAULT NULL,
+            `amount` decimal(10,0) DEFAULT 0,
+            `date` date DEFAULT NULL,
             `type` varchar(191) DEFAULT NULL,
             `status` varchar(191) DEFAULT NULL,
             PRIMARY KEY (`id`),

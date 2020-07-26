@@ -15,7 +15,6 @@ class RolesAndPermissionsSeeder extends Seeder
         // Create Permissions
         $adminPermissions = Permission::create(['name' => 'view backend']);
         $adminPermissions = Permission::create(['name' => 'payment management']);
-        $adminPermissions = Permission::create(['name' => 'refferal users']);
 
         // Create Roles
         $admin = Role::create(['name' => config('access.users.super_admin')]);
@@ -24,13 +23,16 @@ class RolesAndPermissionsSeeder extends Seeder
         // assign permissions
         $admin->givePermissionTo(['view backend']);
         $customer->givePermissionTo(['payment management']);
-        $customer->givePermissionTo(['refferal users']);
 
         // assign roles
         $admin = User::find(1);
         $customer = User::find(2);
 
-        $admin->assignRole(config('access.users.super_admin'));
-        $customer->assignRole(config('access.users.customer_role'));
+        if ($admin && $customer) {
+            $admin->assignRole(config('access.users.super_admin'));
+            $customer->assignRole(config('access.users.customer_role'));
+        } else {
+            return 'Something went wrong while assigning roles to users';
+        }
     }
 }

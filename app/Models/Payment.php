@@ -48,17 +48,21 @@ class Payment extends Model
         try {
 
             $user = Auth::user();
+
             $payment = parent::where('user_id', $user->id)->first();
 
-            $payment->current_balance += $data['deposit_amount'];
-            $payment->payment_date = date('Y-m-d');
-            
-            if ($user->payment_status === self::DEFAULT_BALANCE_ZERO) {
-                $user->payment_status = self::PAID;
-                $user->save();
+            if ($payment) {
+                $payment->current_balance += $data['deposit_amount'];
+                $payment->payment_date = date('Y-m-d');
+                
+                if ($user->payment_status === self::DEFAULT_BALANCE_ZERO) {
+                    $user->payment_status = self::PAID;
+                    $user->save();
+                }
+    
+                $payment->save();
             }
 
-            $payment->save();
         } catch (Exception $e) {
             DB::rollBack();
 

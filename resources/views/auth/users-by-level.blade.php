@@ -10,6 +10,8 @@
             <div class="kt-portlet__head-label">
                 <h3 class="kt-portlet__head-title">
                     Refferal Users <small class="text-muted">Level {{ $id }}</small>
+                    <small class="text-muted">Sum of Bonus</small><br>
+                    <small class="text-muted">Daily Bonus</small>
                 </h3>
             </div>
         </div>
@@ -18,19 +20,24 @@
                 <table class="table table-striped- table-bordered table-hover table-checkable table-data_table" >
                     <thead>
                         <tr>
-                            <th>@lang('First Name')</th>
-                            <th>@lang('Last Name')</th>
+                            <th>@lang('Date')</th>
+                            <th>@lang('User Name')</th>
+                            <th>@lang('Name')</th>
                             <th>@lang('Original Refferar Name')</th>
                             <th>@lang('Email')</th>
+                            <th>@lang('Investment')</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($users as $user)
                         <tr>
-                            <td>{{ $user->first_name }}</td>
-                            <td>{{ $user->last_name }}</td>
+                            {{-- // show Monthe name --}}
+                            <td><span class="badge badge-secondary">{{ $user->created_at->toFormattedDateString() }}</span></td> 
+                            <td>{{ $user->user_name }}</td>
+                            <td>{{ $user->name }}</td>
                             <td>{{ $user->originalReffereName($user->original_reffered_by) }}</td>
-                            <td>{{ $user->email }}</td>
+                            <td><span class="badge badge-success">{{ $user->email }}</span></td>
+                            <td><span class="badge badge-primary">{{ $user->payment->current_balance }}</span></td>
                         </tr>
                         @endforeach
                     </tbody>

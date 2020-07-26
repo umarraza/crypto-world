@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\User;
+use Illuminate\Support\Arr;
 use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Profile;
@@ -175,9 +176,12 @@ class RegisterController extends Controller
      */
     private function refferedByUser() {
 
-        if ($_COOKIE['referral'] !== NULL) {
-            return (int)$_COOKIE['referral'];
+        if (Arr::exists($_COOKIE, 'referral')) {
+            return intval($_COOKIE['referral']);
+        } else {
+            return NULL;
         }
-        throw new GeneralException(__('Somethiing went wrong while registration. Please try again latter.'));
+
+        throw new GeneralException(__('Something went wrong while registration. Please contact support.'));
     }
 }

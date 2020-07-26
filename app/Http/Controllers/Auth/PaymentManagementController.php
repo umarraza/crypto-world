@@ -40,7 +40,11 @@ class PaymentManagementController extends Controller
      */
     public function withDrawAmount(WithdrawPaymentRequest $request) {
 
-        $paymentRequest = $this->paymentRequest->withdraw($request->validated());
+        if (Auth::user()->payment->current_balance == Payment::DEFAULT_BALANCE_ZERO) {
+            return redirect()->back()->withFlashDanger(__('You do not have any balalce to withdraw.'));
+        }
+
+        $paymentRequest = $this->paymentRequest->withdraw($request->all());
         return redirect()->route('user.home')->withFlashSuccess(__('Your rqeuest to withdraw payment sent successfully.'));
     }
 
@@ -60,7 +64,11 @@ class PaymentManagementController extends Controller
      */
     public function depositAmount(DepositPaymentRequest $request) {
 
-        $payment = $this->payment->store($request->validated());
+        $payment = $this->payment->store($request->all());
+
+        if ($payment) {
+            $paymentRequest = $this->paymentRequest->deposit($request->all());
+        }
 
         return redirect()->route('user.home')->withFlashSuccess(__('The payment was deposited successfully.'));
     }

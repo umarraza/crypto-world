@@ -136,7 +136,13 @@ trait UserMethod
         return [];
     }
 
+    /**
+     * Reset two factor authentication code
+     * 
+     * @return int
+     */
     public function originalReffereName($id) {
+        $id = intval($id);
         if ($id) {
             return $this->find($id)->name;
         }

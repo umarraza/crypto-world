@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\Admin;
 
 use App\User;
 use App\Models\Payment;
+use App\Models\Profile;
 use App\Models\Auth\Role;
 use Illuminate\Http\Request;
 use App\Exceptions\GeneralException;
@@ -67,9 +68,9 @@ class UserController extends Controller
      * @throws \App\Exceptions\GeneralException
      * @throws \Throwable
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $user = $this->userService->store($request->validated());
+        $user = $this->userService->store($request->all());
 
         return redirect()->route('admin.user.show', $user)->withFlashSuccess(__('The user was successfully created.'));
     }
@@ -107,9 +108,9 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $this->userService->update($user, $request->validated());
+        $this->userService->update($user, $request->all());
 
-        return redirect()->route('admin.user.index', $user)->withFlashSuccess(__('The user was successfully updated.'));
+        return redirect()->route('admin.user.index')->withFlashSuccess(__('The user was successfully updated.'));
     }
 
     
@@ -122,7 +123,7 @@ class UserController extends Controller
      */
     public function destroy(DeleteUserRequest $request, User $user)
     {
-        $this->userService->delete($user);
+        $this->userService->destroy($user);
 
         return redirect()->route('admin.user.index')->withFlashSuccess(__('The user was successfully deleted.'));
     }
@@ -144,9 +145,13 @@ class UserController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function usersByLevel($id, $users = null) {
-        // if ($id > 6) {
-        //    return redirect()->back()->withFlashSuccess(__('Invalid level selected. Please provide valid level'));
-        // }
+
+        $id = intval($id);
+
+        if ($id>6 || $id<1) {
+            return redirect()->route('user.home')->withFlashDanger(__('Invalid level, please select valid level.'));
+        }
+
 
         $levelOneIds = null; $levelTwoIds = null; $levelThreeIds = null; $levelFourIds = null; $levelFiveIds = null; $levelSixIds = null;
 

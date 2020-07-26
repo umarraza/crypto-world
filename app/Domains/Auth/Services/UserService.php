@@ -3,6 +3,8 @@
 namespace App\Domains\Auth\Services;
 
 use App\User;
+use App\Models\Profile;
+use App\Models\Payment;
 use App\Exceptions\GeneralException;
 use App\Services\BaseService;
 use Exception;
@@ -92,18 +94,32 @@ class UserService extends BaseService
     public function store(array $data = []): User
     {
         DB::beginTransaction();
-
         try {
             $user = $this->createUser([
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
+                'user_name' => $data['user_name'],
                 'email' => $data['email'],
                 'password' => $data['password'],
                 'email_verified_at' => isset($data['email_verified']) && $data['email_verified'] === '1' ? now() : null,
                 'active' => isset($data['active']) && $data['active'] === '1',
             ]);
 
-            $user->syncRoles($data['role'] ?? []);
+            if ($user) {
+
+                Payment::create(['user_id' => $user->id,'current_balance' => Payment::DEFAULT_BALANCE_ZERO]);                
+
+                $user->syncRoles($data['role'] ?? []);
+
+                $profile = Profile::create([
+                    'user_id' => $user->id,
+                    'mobile_number' => $data['mobile_number'],
+                    'birthday' => $data['birthday'],
+                    'street' => $data['street'],
+                    'city' => $data['city'],
+                    'post_code' => $data['post_code'],
+                ]);
+            }
 
         } catch (Exception $e) {
             DB::rollBack();
@@ -133,9 +149,9 @@ class UserService extends BaseService
     public function update(User $user, array $data = []): User
     {
         DB::beginTransaction();
-
         try {
             $user->update([
+                'user_name' => $data['user_name'],
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
             ]);
@@ -148,6 +164,7 @@ class UserService extends BaseService
             ]);
 
         } catch (Exception $e) {
+
             DB::rollBack();
 
             throw new GeneralException(__('There was a problem updating this user. Please try again.'));
@@ -279,8 +296,6 @@ class UserService extends BaseService
     public function destroy(User $user): bool
     {
         if ($user->forceDelete()) {
-            event(new UserDestroyed($user));
-
             return true;
         }
 
@@ -295,6 +310,7 @@ class UserService extends BaseService
     protected function createUser(array $data = []): User
     {
         return $this->model::create([
+            'user_name' => $data['user_name'] ?? null,
             'first_name' => $data['first_name'] ?? null,
             'last_name' => $data['last_name'] ?? null,
             'email' => $data['email'] ?? null,

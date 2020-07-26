@@ -51,6 +51,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+
     /**
      * Two factor authentication.
      *
@@ -58,6 +59,12 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
+        if (! $user->isActive()) {
+            auth()->logout();
+
+            return redirect()->route('login')->withFlashDanger(__('Your account has been deactivated.'));
+        }
+
         if (!$user->isAdmin()) {
             $user->generateTwoFactorCode();
             $user->notify(new TwoFactorCode());

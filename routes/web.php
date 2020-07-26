@@ -23,7 +23,6 @@ Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('verify', 'Auth\TwoFactorController@index')->name('verify.index’');
 Route::get('verify/resend', 'Auth\TwoFactorController@resend')->name('verify.resend');
 Route::resource('verify', 'Auth\TwoFactorController')->only(['index', 'store']);
-Route::get('profile', 'TwoFactorController@resend')->name('verify.resend');
 
 
 // Admin Routes
@@ -32,17 +31,15 @@ Route::group(['middleware' => config('access.users.super_admin'),'prefix' => 'ad
     Route::get('home', [HomeController::class, 'index'])->name('home');
     
     Route::resource('user', 'UserController');
+    Route::get('user/{user}/delete', 'UserController@destroy')->name('user.delete');
 
     Route::get('users/unpaid', 'UserController@unpaid')->name('unpaid.users');
     
-    Route::get('active/{user}', 'UserActivationController@confirm')->name('user.active');
+    Route::get('active/{user}', 'UserActivationController@activate')->name('user.active');
     Route::get('unactive/{user}', 'UserActivationController@unactivate')->name('user.unactive');
 
     Route::get('confirm/{user}', 'UserConfirmationController@confirm')->name('user.confirm');
     Route::get('unconfirm/{user}', 'UserConfirmationController@unconfirm')->name('user.unconfirm');
-
-    Route::get('payment/deposit/history', 'PaymentManagementController@depositHistory')->name('payment.deposit.history');
-    Route::get('payment/withdraw/history', 'PaymentManagementController@withdrawHistory')->name('payment.withdraw.history');
 
     Route::get('payment/withdraw/requests', 'PaymentRequestController@withdrawRequests')->name('payment.withdraw.requests');
     Route::get('payment/withdraw/request/accept', 'PaymentRequestController@withdrawRequestAction')->name('payment.withdraw.request.action');
@@ -63,3 +60,6 @@ Route::group(['middleware' => [config('access.users.customer_role'),config('acce
     Route::post('payment/withdraw/amount', 'PaymentManagementController@withDrawAmount')->name('payment.withdraw.save');
     Route::post('payment/deposit/amount', 'PaymentManagementController@depositAmount')->name('payment.deposit.save');
 });
+
+    // Route::get('payment/deposit/history', 'Auth\PaymentManagementController@depositHistory')->name('payment.deposit.history');
+    // Route::get('payment/withdraw/history', 'Auth\PaymentManagementController@withdrawHistory')->name('payment.withdraw.history');

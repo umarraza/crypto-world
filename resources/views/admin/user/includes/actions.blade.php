@@ -12,13 +12,7 @@
             @lang('More')
         </button>
         <div class="dropdown-menu" aria-labelledby="userActions">
-
-            <a href="{{ route('admin.user.destroy', $user->id) }}"
-                class="dropdown-item" onclick="event.preventDefault();document.querySelector('.user-delete-form').submit()">@lang('Delete')</a>
-            <form action="{{ route('admin.user.destroy', $user) }}" method="post" class="user-delete-form">
-                @csrf
-                @method('DELETE')
-            </form>
+            <a href="{{ route('admin.user.delete', $user->id) }}" class="dropdown-item">@lang('Delete')</a>
         </div>
     </div>
 </div>

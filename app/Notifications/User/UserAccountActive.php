@@ -35,7 +35,7 @@ class UserAccountActive extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage())
-            ->subject(app_name())
+            ->subject('Crypto World')
             ->line(__('Your account has been confirmed.'))
             ->action(__('Login'), route('login'))
             ->line(__('Thank you for using our application!'));

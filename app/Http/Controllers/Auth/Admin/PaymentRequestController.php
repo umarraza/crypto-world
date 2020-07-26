@@ -27,17 +27,18 @@ class PaymentRequestController extends Controller
      */
     public function withdrawRequests() {
         return view('auth.payment.withdraw-requests')
-            ->withWithdrawRequests($this->paymentRequest->where('status', PaymentRequest::PENDING)->get());
+            ->withWithdrawRequests($this->paymentRequest->where('status', PaymentRequest::PENDING)
+                ->where('type', PaymentRequest::WITHDRAW)->get());
     }
 
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function withdrawRequestAction(Request $request) {
-
         $flag = decrypt($request->flag);
-        
-        $model = $this->paymentRequest->where('user_id', decrypt($request->user_id))->first();
+
+        $model = $this->paymentRequest->find(decrypt($request->id));
+
 
         if ($flag === PaymentRequest::APPROVED) {
             
@@ -52,6 +53,7 @@ class PaymentRequestController extends Controller
         }
 
         if ($flag === PaymentRequest::REJECTED) {
+
             $model->status = PaymentRequest::REJECTED;
             $model->save();
 

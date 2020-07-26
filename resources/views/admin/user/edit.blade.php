@@ -35,6 +35,14 @@
             </div><!--form-group-->
 
             <div class="form-group row">
+                <label for="user_name" class="col-md-2 col-form-label">@lang('User Name')</label>
+
+                <div class="col-md-10">
+                    <input type="text" name="user_name" id="user_name" class="form-control" placeholder="{{ __('User Name') }}" maxlength="100" value="{{ $user->user_name }}" autocomplete="new-password" />
+                </div>
+            </div><!--form-group-->
+
+            <div class="form-group row">
                 <label for="mobile_number" class="col-md-2 col-form-label">@lang('Mobile Number')</label>
 
                 <div class="col-md-10">
