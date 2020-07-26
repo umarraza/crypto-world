@@ -25,15 +25,14 @@
         </div>
         <div class="kt-portlet__body">
             <div class="users-table-container">
-                <table class="table table-striped- table-bordered table-hover table-checkable table-data_table" >
+                <table class="table table-striped- table-bordered table-hover table-checkable table-data_table">
                     <thead>
                         <tr>
                             <th>@lang('Name')</th>
                             <th>@lang('Email')</th>
-                            {{-- <th>@lang('Confirmed')</th> --}}
                             <th>@lang('Active')</th>
                             <th>@lang('Role')</th>
-                            <th>@lang('Last Updated')</th>
+                            <th>@lang('Action')</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,10 +40,8 @@
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            {{-- <td>@include('admin.user.includes.confirm', ['user' => $user])</td> --}}
                             <td>@include('admin.user.includes.active', ['user' => $user])</td>
                             <td>{!! $user->roles_label !!}</td>
-                            <td>{{ $user->updated_at->diffForHumans() }}</td>
                             <td>@include('admin.user.includes.actions', ['user' => $user])</td>
                         </tr>
                         @endforeach
@@ -52,7 +49,7 @@
                 </table>
             </div>
             <div class="pagination" style="margin-left:auto">
-                {{-- {{ $users->links() }} --}}
+                {{ $users->links() }}
             </div>
         </div>
     </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Domains\Auth\Services\UserService;
 use App\Http\Requests\User\UpdateProfileRequest;
 
@@ -16,7 +17,7 @@ class ProfileController extends Controller
      * @return mixed
      */
     public function profile() {
-        return view('profile')->withUser(auth()->user());
+        return view('auth.profile')->withUser(auth()->user());
     }
 
     /**
@@ -27,12 +28,15 @@ class ProfileController extends Controller
      */
     public function update(UpdateProfileRequest $request, UserService $userService)
     {
-        $userService->updateProfile($request->user(), $request->validated());
+        $logged_in_user = Auth::user();
 
-        // if (session()->has('resent')) {
-        //     return redirect()->route('frontend.auth.verification.notice')->withFlashInfo(__('You must confirm your new e-mail address before you can go any further.'));
-        // }
+        $userService->updateProfile($request->user(), $request->all());
 
-        return redirect()->route('frontend.user.profile', ['#information'])->withFlashSuccess(__('Profile successfully updated.'));
+        if ($logged_in_user->isAdmin()) {
+            return redirect()->route('admin.home')->withFlashSuccess(__('Profile successfully updated.'));
+        } else {
+            return redirect()->route('user.home')->withFlashSuccess(__('Profile successfully updated.'));
+        }
+
     }
 }

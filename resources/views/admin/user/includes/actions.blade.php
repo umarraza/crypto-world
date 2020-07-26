@@ -13,6 +13,7 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="userActions">
             <a href="{{ route('admin.user.delete', $user->id) }}" class="dropdown-item">@lang('Delete')</a>
+            <a href="{{ route('admin.payment.deposit', ['id'=>$user->id]) }}" class="dropdown-item">@lang('Deposit')</a>
         </div>
     </div>
 </div>

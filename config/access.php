@@ -9,7 +9,7 @@ return [
         'login' => env('LOGIN_CAPTCHA_STATUS', false),
     ],
 
-    'default_size' => 10,
+    'default_size' => 5,
     
     // Whether or not registration is enabled
     'registration' => env('ENABLE_REGISTRATION', true),

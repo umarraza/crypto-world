@@ -9,12 +9,12 @@
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <h3 class="kt-portlet__head-title">
-                    Refferal Users <small class="text-muted">Level {{ $id }}</small><br>
+                    Refferal Users <small class="text-muted">Level {{ $level }}</small><br>
                 </h3>
             </div>
             <div class="float-right">
-                <small class="text-muted">Sum of Bonus <b>1000</b></small><br>
-                <small class="text-muted">Daily Bonus <b>1000</b></small>
+                <small class="text-muted">Sum of Bonus <b>{{ auth()->user()->getTeamBonusByUsersLevel($level) }}</b></small><br>
+                <small class="text-muted">Daily Bonus <b>{{ auth()->user()->getRefferalLevelPercentage($level) }}</b></small>
             </div>
         </div>
         <div class="kt-portlet__body">
@@ -33,7 +33,6 @@
                     <tbody>
                         @foreach($users as $user)
                         <tr>
-                            {{-- // show Monthe name --}}
                             <td><span class="badge badge-secondary">{{ $user->created_at->toFormattedDateString() }}</span></td> 
                             <td>{{ $user->user_name }}</td>
                             <td>{{ $user->name }}</td>

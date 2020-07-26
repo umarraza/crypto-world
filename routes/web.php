@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\Admin\UserController;
-use App\Http\Controllers\HomeController;
 
 /*
  * Global Routes
@@ -16,6 +17,8 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('profile/{user}/edit', [ProfileController::class, 'profile'])->name('profile');
+Route::patch('profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
 
 // Two factor auth rputes
 
@@ -32,6 +35,8 @@ Route::group(['middleware' => config('access.users.super_admin'),'prefix' => 'ad
     
     Route::resource('user', 'UserController');
     Route::get('user/{user}/delete', 'UserController@destroy')->name('user.delete');
+    Route::get('user/payment/deposit', 'UserController@deposit')->name('payment.deposit');
+    Route::post('user/payment/deposit', 'UserController@depositAmount')->name('payment.deposit.store');
 
     Route::get('users/unpaid', 'UserController@unpaid')->name('unpaid.users');
     

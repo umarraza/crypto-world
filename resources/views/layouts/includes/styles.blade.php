@@ -1,6 +1,6 @@
     <!--begin::Fonts -->
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700"> --}}
-
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
     <!--end::Fonts -->
 
     <!--begin::Page Vendors Styles(used by this page) -->

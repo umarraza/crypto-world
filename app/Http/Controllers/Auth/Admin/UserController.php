@@ -7,10 +7,12 @@ use App\Models\Payment;
 use App\Models\Profile;
 use App\Models\Auth\Role;
 use Illuminate\Http\Request;
+use App\Models\PaymentRequest;
 use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Domains\Auth\Services\UserService;
+use App\Http\Requests\Auth\DepositPaymentRequest;
 use App\Http\Requests\Admin\User\ManageUserRequest;
 use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Http\Requests\Admin\User\UpdateUserRequest;
@@ -33,11 +35,13 @@ class UserController extends Controller
      *
      * @param App\User $user
      */
-    public function __construct(User $user, UserService $userService, Role $role)
+    public function __construct(User $user, UserService $userService, Role $role, Payment $payment, PaymentRequest $paymentRequest)
     {
         $this->user = $user;
         $this->role = $role;
+        $this->payment = $payment;
         $this->userService = $userService;
+        $this->paymentRequest = $paymentRequest;
     }
 
     /**
@@ -47,7 +51,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('admin.user.index')->withUsers($this->user->all());
+        return view('admin.user.index')->withUsers($this->user->paginate(config('access.default_size')));
     }
 
     /**
@@ -144,79 +148,58 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function usersByLevel($id, $users = null) {
+    public function usersByLevel($level) {
 
-        $id = intval($id);
-
-        if ($id>6 || $id<1) {
+        $level = intval($level);
+        
+        if ($level>User::LEVEL_SIX || $level<User::LEVEL_ONE) {
             return redirect()->route('user.home')->withFlashDanger(__('Invalid level, please select valid level.'));
         }
 
+        return view('auth.users-by-level')->withUsers(Auth::user()->getUsersByRefferalLevel($level))->withLevel($level);
+    }
 
-        $levelOneIds = null; $levelTwoIds = null; $levelThreeIds = null; $levelFourIds = null; $levelFiveIds = null; $levelSixIds = null;
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function deposit(Request $request) {
+        return view('admin.deposit')->withId($request->id);
+    }
 
-        $levelOneUsers = User::where('referred_by', Auth::user()->id);
-        $levelOneUsers = $levelOneUsers->get();
+     /**
+     * @param  DepositPaymentRequest  $request
+     *
+     * @return mixed
+     * @throws \App\Exceptions\GeneralException
+     * @throws \Throwable
+     */
+    public function depositAmount(DepositPaymentRequest $request) {
 
-        if (!empty($levelOneUsers)) {
-            $levelOneIds = $levelOneUsers->pluck('id');
-        }
+        \DB::beginTransaction();
 
-        $levelTwoUsers = User::whereIn('referred_by', $levelOneIds);
-        $levelTwoUsers = $levelTwoUsers->get();
+            try {
+                $user = User::find(decrypt($request->id));
+                $payment = Payment::where('user_id', intval(decrypt($request->id)))->first();
 
-        if (!empty($levelTwoUsers)) {
-            $levelTwoIds = $levelTwoUsers->pluck('id');
-        }
-        
-        $levelThreeUsers = User::whereIn('referred_by', $levelTwoIds);
-        $levelThreeUsers = $levelThreeUsers->get();
+                if ($payment)
+                {
+                    $payment->current_balance += $request->deposit_amount;
+                    $payment->payment_date = date('Y-m-d');
+                
+                    if ($user->payment_status === Payment::DEFAULT_BALANCE_ZERO) {
+                        $user->payment_status = Payment::PAID;
+                        $user->save();
+                    }
 
-        if (!empty($levelThreeUsers)) {
-            $levelThreeIds = $levelThreeUsers->pluck('id');
-        }
+                    $payment->save();
+                }
+    
+            } catch (Exception $e) {
+                \DB::rollBack();
+                throw new GeneralException(__('There was a problem while depositing this amount. Please try again.'));
+            }
+            \DB::commit();
 
-        $levelFourUsers = User::whereIn('referred_by', $levelThreeIds);
-        $levelFourUsers = $levelFourUsers->get();
-
-        if (!empty($levelTwoUsers)) {
-            $levelFourIds = $levelFourUsers->pluck('id');
-        }
-
-        $levelFiveUsers = User::whereIn('referred_by', $levelFourIds);
-        $levelFiveUsers = $levelFiveUsers->get();
-
-        if (!empty($levelFiveUsers)) {
-            $levelFiveIds = $levelFiveUsers->pluck('id');
-        }
-
-        $levelSixUsers = User::whereIn('referred_by', $levelFiveIds)->get();
-
-        switch ($id) {
-            case User::LEVEL_ONE:
-                $users = $levelOneUsers;
-            break;
-
-            case User::LEVEL_TWO:
-                $users = $levelTwoUsers;
-            break;
-
-            case User::LEVEL_THREE:
-                $users = $levelThreeUsers;
-            break;
-
-            case User::LEVEL_FOUR:
-                $users = $levelFourUsers;
-            break;
-
-            case User::LEVEL_FIVE:
-                $users = $levelFiveUsers;
-            break;
-
-            case User::LEVEL_SIX:
-                $users = $levelSixUsers;
-            break;
-        }
-        return view('auth.users-by-level')->withUsers($users)->withId($id);
+        return redirect()->route('admin.user.index')->withFlashSuccess(__('The payment was deposited successfully.'));
     }
 }

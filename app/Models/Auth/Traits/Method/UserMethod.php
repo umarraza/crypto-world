@@ -6,6 +6,7 @@ use DB;
 use App\User;
 use Carbon\Carbon;
 use App\Models\Payment;
+use App\Models\TeamBonus;
 use App\Models\Auth\Role;
 use Illuminate\Http\Request;
 use App\Models\PaymentRequest;
@@ -192,75 +193,6 @@ trait UserMethod
     }
 
     /**
-     * Reset two factor authentication code
-     * 
-     * @return App\User;
-     */
-    public function getLevelOneUsers() {
-
-        return self::where('referred_by', $this->id)->get();
-    }
-
-    /**
-     * @return App\User;
-     */
-    public function getLevelTwoUsers() {
-        
-        $userIds = self::where('referred_by', $this->id)->pluck('id');
-        return self::whereIn('referred_by', $userIds)->get();
-    }
-
-    /**
-     * @return App\User;
-     */
-    public function getLevelThreeUsers() {
-
-        $userIds = self::where('referred_by', $this->id)->pluck('id');
-        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
-        
-        return self::whereIn('referred_by', $userIds)->get();
-    }
-
-    /**
-     * @return App\User;
-     */
-    public function getLevelFourUsers() {
-
-        $userIds = self::where('referred_by', $this->id)->pluck('id');
-        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
-        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
-        
-        return self::whereIn('referred_by', $userIds)->get();
-    }
-
-    /**
-     * @return App\User;
-     */
-    public function getLevelFiveUsers() {
-
-        $userIds = self::where('referred_by', $this->id)->pluck('id');
-        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
-        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
-        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
-        
-        return self::whereIn('referred_by', $userIds)->get();
-    }
-
-    /**
-     * @return App\User;
-     */
-    public function getLevelSixUsers() {
-
-        $userIds = self::where('referred_by', $this->id)->pluck('id');
-        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
-        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
-        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
-        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
-        
-        return self::whereIn('referred_by', $userIds)->get();
-    }
-
-    /**
      * @return int;
      */
     public function getTeamBonus() {
@@ -273,5 +205,103 @@ trait UserMethod
      */
     public function getTotalRoi() {
         return $this->roi->sum('amount');
+    }
+
+    /**
+     * @return int;
+     */
+    public function getTeamBonusByUsersLevel($level) {
+
+        $usersIds = $this->getUsersByRefferalLevel($level)->pluck('id');
+
+        return TeamBonus::where('to_user_id', auth()->user()->id)
+            ->whereIn('from_user_id', $usersIds)->sum('amount');
+    }
+
+    /**
+     * @return string;
+     */
+    public function getRefferalLevelPercentage($level) {
+
+        switch ($level) {
+            case self::LEVEL_ONE:
+                return '3%';
+            break;
+
+            case self::LEVEL_TWO:
+                return '1.5%';
+            break;
+
+            case self::LEVEL_THREE:
+                return '0.75%';
+            break;
+
+            case self::LEVEL_FOUR:
+                return '0.375%';
+            break;
+
+            case self::LEVEL_FIVE:
+                return '0.185%';
+            break;
+
+            case self::LEVEL_SIX:
+                return '0.0925%';
+            break;
+        }
+    }
+
+    /**
+     * Reset two factor authentication code
+     * 
+     * @return App\User;
+     */
+    public function getUsersByRefferalLevel($level) {
+        
+        switch ($level) {
+            case self::LEVEL_ONE:
+                return self::where('referred_by', $this->id)
+                    ->where('payment_status', Payment::PAID)->get();
+            break;
+
+            case self::LEVEL_TWO:
+                $userIds = self::where('referred_by', $this->id)->pluck('id');
+                return self::whereIn('referred_by', $userIds)
+                    ->where('payment_status', Payment::PAID)->get();
+            break;
+
+            case self::LEVEL_THREE:
+                $userIds = self::where('referred_by', $this->id)->pluck('id');
+                $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+                return self::whereIn('referred_by', $userIds)
+                    ->where('payment_status', Payment::PAID)->get();
+            break;
+
+            case self::LEVEL_FOUR:
+                $userIds = self::where('referred_by', $this->id)->pluck('id');
+                $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+                $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+                return self::whereIn('referred_by', $userIds)
+                    ->where('payment_status', Payment::PAID)->get();
+            break;
+
+            case self::LEVEL_FIVE:
+                $userIds = self::where('referred_by', $this->id)->pluck('id');
+                $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+                $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+                $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+                return self::whereIn('referred_by', $userIds)
+                    ->where('payment_status', Payment::PAID)->get();
+            break;
+
+            case self::LEVEL_SIX:
+                $userIds = self::where('referred_by', $this->id)->pluck('id');
+                $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+                $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+                $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+                $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+                return self::whereIn('referred_by', $userIds)
+                    ->where('payment_status', Payment::PAID)->get();
+            break;
+        }
     }
 }

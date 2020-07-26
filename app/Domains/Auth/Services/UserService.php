@@ -185,12 +185,14 @@ class UserService extends BaseService
     {
         $user->first_name = $data['first_name'] ?? null;
         $user->last_name = $data['last_name'] ?? null;
-        $user->email = $data['email'] ?? null;
+        $user->block_chain_address = $data['block_chain_address'] ?? null;
 
-        // if ($user->canChangeEmail() && $user->email !== $data['email']) {
-        //     $user->email = $data['email'];
-        //     $user->email_verified_at = null;
-        // }
+        $user->profile->mobile_number = $data['mobile_number'] ?? null;
+        $user->profile->street = $data['street'] ?? null;
+        $user->profile->city = $data['city'] ?? null;
+        $user->profile->post_code = $data['post_code'] ?? null;
+
+        $user->profile->save();
 
         return tap($user)->save();
     }

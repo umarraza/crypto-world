@@ -50,3 +50,9 @@
 <!--end::Page Scripts -->
 
 <script src="{{ asset('assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+
+{{-- Imports --}}
+<script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+{{-- Custom --}}
+<script src="{{ asset('js/custom.js') }}" type="text/javascript"></script>

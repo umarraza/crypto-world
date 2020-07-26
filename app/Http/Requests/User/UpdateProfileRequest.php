@@ -17,7 +17,10 @@ class UpdateProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if (auth()->user()->isAdmin() || auth()->user()->isCustomer()) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -28,11 +31,14 @@ class UpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'max:100'],
-            'last_name' => ['required', 'max:100'],
-            'email' => [Rule::requiredIf(function () {
-                return config('access.user.change_email');
-            }), 'max:255', 'email', Rule::unique('users')->ignore($this->user()->id)],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            // 'mobile_number' => 'required|regex:/(01)[0-9]{9}/',
+            'mobile_number' => ['required', 'string', 'max:255'],
+            'street' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'post_code' => ['required', 'string', 'max:255'],
+            'block_chain_address' => ['required', 'string', 'max:255'],
         ];
     }
 }

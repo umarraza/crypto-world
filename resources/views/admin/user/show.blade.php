@@ -41,6 +41,12 @@
                                             <td>{{ $user->email }}</td>
                                         </tr>
                                         <tr>
+                                            <th>@lang('Blockchain Address')</th>
+                                            <td>
+                                                <span class="label label-warning label-pill label-inline mr-2">{{ $user->block_chain_address }}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <th>@lang('Status')</th>
                                             <td>@include('admin.user.includes.status', ['user' => $user])</td>
                                         </tr>

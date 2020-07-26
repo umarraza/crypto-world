@@ -16,7 +16,7 @@ class DepositPaymentRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->isCustomer();
+        return true;
     }
 
     /**
