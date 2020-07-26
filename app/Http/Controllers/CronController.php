@@ -11,7 +11,6 @@ class CronController extends Controller
 {
     public function getPercentage() {
 
-
         $users = User::where('active', User::ACTIVE)->where('id','!=',1)->get();
 
         foreach($users as $user) {

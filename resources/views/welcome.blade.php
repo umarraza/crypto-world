@@ -79,6 +79,7 @@
                         <div class="top-right links">
                             @auth
                                 <a href="{{  auth()->user()->isAdmin() ? route('admin.home') : route('user.home') }}">Home</a>
+                                <a href="{{  route('logout') }}">Logout</a>
                             @else
                                 <a href="{{ route('register') }}">Register</a>
                                 <a href="{{ route('login') }}">Login</a>

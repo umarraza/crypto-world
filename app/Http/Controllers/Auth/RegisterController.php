@@ -101,17 +101,19 @@ class RegisterController extends Controller
         $found = false;
         while ($found == false) {
 
-            $users = User::where('referred_by', $userIds[$index])->where('payment_status', Payment::PAID)->get(); // ali & numan
+            $users = User::where('referred_by', $userIds[$index])
+                // ->where('payment_status', Payment::PAID)
+                ->get();
             $count = $users->count();
 
-            if ($count < 2) {
+            if ($count < 6) {
                 $found = true;
-                $refferdById = $userIds[$index]; // searched user will be the reffered by user of new user
+                $refferdById = $userIds[$index]; 
 
                 return $this->registerUser($data,$refferdById);
             } else {
 
-                $ids = User::where('referred_by', $userIds[$index])->where('payment_status', Payment::PAID)->pluck('id')->toArray(); // ali & numan
+                $ids = User::where('referred_by', $userIds[$index])->where('payment_status', Payment::PAID)->pluck('id')->toArray();
                 
                 $userIds = array_merge($userIds, $ids);
                 $index++;
@@ -119,7 +121,7 @@ class RegisterController extends Controller
 
             $counter++; 
 
-            if ($counter > 2 * $power) {
+            if ($counter >  pow(6,$power)) {
                 $power++;
                 $level++;
                 $counter = 1;

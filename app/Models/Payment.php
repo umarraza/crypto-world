@@ -55,7 +55,7 @@ class Payment extends Model
                 $payment->current_balance += $data['deposit_amount'];
                 $payment->payment_date = date('Y-m-d');
                 
-                if ($user->payment_status === self::DEFAULT_BALANCE_ZERO) {
+                if ($user->payment_status == self::DEFAULT_BALANCE_ZERO) {
                     $user->payment_status = self::PAID;
                     $user->save();
                 }
