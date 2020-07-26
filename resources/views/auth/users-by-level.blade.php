@@ -38,7 +38,7 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->originalReffereName($user->original_reffered_by) }}</td>
                             <td><span class="badge badge-success">{{ $user->email }}</span></td>
-                            <td><span class="badge badge-primary">{{ $user->payment->current_balance }}</span></td>
+                            <td><span class="badge badge-primary">{{ $user->totalDeposit() }}</span></td>
                         </tr>
                         @endforeach
                     </tbody>

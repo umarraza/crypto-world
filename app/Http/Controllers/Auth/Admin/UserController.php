@@ -186,7 +186,7 @@ class UserController extends Controller
                     $payment->current_balance += $request->deposit_amount;
                     $payment->payment_date = date('Y-m-d');
                 
-                    if ($user->payment_status === Payment::DEFAULT_BALANCE_ZERO) {
+                    if ($user->payment_status == Payment::DEFAULT_BALANCE_ZERO) {
                         $user->payment_status = Payment::PAID;
                         $user->save();
                     }

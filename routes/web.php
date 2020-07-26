@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CronController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\Admin\UserController;
 
@@ -16,6 +17,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
+Route::get('percentage', [CronController::class, 'getPercentage'])->name('percentage');
+
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('profile/{user}/edit', [ProfileController::class, 'profile'])->name('profile');
 Route::patch('profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
