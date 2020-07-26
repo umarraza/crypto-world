@@ -24,7 +24,7 @@ class CreatePaymentsTable extends Migration
             PRIMARY KEY (`id`),
             KEY `user_id` (`user_id`),
             CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-          ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4';
+          ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4';
 
         DB::connection()->getPdo()->exec($sql);
     }

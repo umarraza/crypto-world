@@ -27,7 +27,7 @@ class CreateUserTeamBonusesTable extends Migration
             CONSTRAINT `user_team_bonuses_ibfk_2` FOREIGN KEY (`from_user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4';
 
-            DB::connection()->getPdo()->exec($sql);
+        DB::connection()->getPdo()->exec($sql);
     }
 
     /**

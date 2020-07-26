@@ -26,7 +26,7 @@ class CreateProfilesTable extends Migration
             PRIMARY KEY (`id`),
             KEY `user_id` (`user_id`),
             CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-          ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4';
+          ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4';
 
         DB::connection()->getPdo()->exec($sql);
     }
