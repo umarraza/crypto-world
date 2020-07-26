@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Models\Payment;
 use App\Models\Auth\Role;
 use Illuminate\Http\Request;
+use App\Models\PaymentRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -147,5 +148,130 @@ trait UserMethod
             return $this->find($id)->name;
         }
         return '';
+    }
+
+    /**
+     * Reset two factor authentication code
+     * 
+     * @return int
+     */
+    public function totalDeposit() {
+
+        return $this->paymentHistory->where('type', PaymentRequest::DEPOSIT)->sum('amount');
+    }
+
+    /**
+     * Reset two factor authentication code
+     * 
+     * @return int
+     */
+    public function totalWithdraw() {
+
+        return $this->paymentHistory->where('type', PaymentRequest::WITHDRAW)->where('status',PaymentRequest::APPROVED)->sum('amount');
+    }
+
+    /**
+     * Reset two factor authentication code
+     * 
+     * @return int
+     */
+    public function calculateTeamBonus($users, $percentage) {
+
+        $sum = 0;
+
+        foreach($users as $user) {
+
+            $totalDeposit = $user->totalDeposit();
+            $roi = $totalDeposit * ($percentage/(30*100));
+            $sum += $roi;
+
+            $teamBonus = TeamBonus::create(['to_user_id' => $this->id, 'from_user_id'=>$user->id, 'amount' => $roi]);
+        }
+
+        return $sum;
+    }
+
+    /**
+     * Reset two factor authentication code
+     * 
+     * @return App\User;
+     */
+    public function getLevelOneUsers() {
+
+        return self::where('referred_by', $this->id)->get();
+    }
+
+    /**
+     * @return App\User;
+     */
+    public function getLevelTwoUsers() {
+        
+        $userIds = self::where('referred_by', $this->id)->pluck('id');
+        return self::whereIn('referred_by', $userIds)->get();
+    }
+
+    /**
+     * @return App\User;
+     */
+    public function getLevelThreeUsers() {
+
+        $userIds = self::where('referred_by', $this->id)->pluck('id');
+        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+        
+        return self::whereIn('referred_by', $userIds)->get();
+    }
+
+    /**
+     * @return App\User;
+     */
+    public function getLevelFourUsers() {
+
+        $userIds = self::where('referred_by', $this->id)->pluck('id');
+        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+        
+        return self::whereIn('referred_by', $userIds)->get();
+    }
+
+    /**
+     * @return App\User;
+     */
+    public function getLevelFiveUsers() {
+
+        $userIds = self::where('referred_by', $this->id)->pluck('id');
+        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+        
+        return self::whereIn('referred_by', $userIds)->get();
+    }
+
+    /**
+     * @return App\User;
+     */
+    public function getLevelSixUsers() {
+
+        $userIds = self::where('referred_by', $this->id)->pluck('id');
+        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+        $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
+        
+        return self::whereIn('referred_by', $userIds)->get();
+    }
+
+    /**
+     * @return int;
+     */
+    public function getTeamBonus() {
+
+        return $this->teamBonus->sum('amount');
+    }
+
+    /**
+     * @return int;
+     */
+    public function getTotalRoi() {
+        return $this->roi->sum('amount');
     }
 }

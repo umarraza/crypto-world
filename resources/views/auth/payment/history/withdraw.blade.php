@@ -8,8 +8,11 @@
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <h3 class="kt-portlet__head-title">
-                    Payment History <small class="text-muted">Withdraw</small>
+                    Withdraw History
                 </h3>
+            </div>
+            <div class="float-right">
+                <small class="text-muted font-17">Total Withdraw: <b>{{ auth()->user()->totalWithdraw() }}</b></small><br>
             </div>
         </div>
         <div class="kt-portlet__body">

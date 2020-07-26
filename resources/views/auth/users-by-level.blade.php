@@ -9,10 +9,12 @@
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <h3 class="kt-portlet__head-title">
-                    Refferal Users <small class="text-muted">Level {{ $id }}</small>
-                    <small class="text-muted">Sum of Bonus</small><br>
-                    <small class="text-muted">Daily Bonus</small>
+                    Refferal Users <small class="text-muted">Level {{ $id }}</small><br>
                 </h3>
+            </div>
+            <div class="float-right">
+                <small class="text-muted">Sum of Bonus <b>1000</b></small><br>
+                <small class="text-muted">Daily Bonus <b>1000</b></small>
             </div>
         </div>
         <div class="kt-portlet__body">

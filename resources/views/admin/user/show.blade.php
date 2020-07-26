@@ -16,7 +16,7 @@
     <div class="kt-portlet__body">
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_overview">Active</a>
+                <a class="nav-link active" data-toggle="tab" href="#" data-target="#kt_tabs_overview">Details</a>
             </li>
         </ul>
         <div class="tab-content">

@@ -9,7 +9,7 @@
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <h3 class="kt-portlet__head-title">
-                    User Management <small class="text-muted">Active</small>
+                    User Management
                 </h3>
             </div>
             <div class="kt-portlet__head-toolbar">

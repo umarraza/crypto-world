@@ -40,8 +40,14 @@ class PaymentManagementController extends Controller
      */
     public function withDrawAmount(WithdrawPaymentRequest $request) {
 
-        if (Auth::user()->payment->current_balance == Payment::DEFAULT_BALANCE_ZERO) {
-            return redirect()->back()->withFlashDanger(__('You do not have any balalce to withdraw.'));
+        $user = Auth::user();
+
+        if ($user->payment->current_balance == Payment::DEFAULT_BALANCE_ZERO) {
+            return redirect()->back()->withFlashDanger(__('You do not have any balance to withdraw.'));
+        }
+
+        if ($user->payment->current_balance < $request->withdraw_amount) {
+            return redirect()->back()->withFlashDanger(__('You cannot withdraw amount greater then your current amount.'));
         }
 
         $paymentRequest = $this->paymentRequest->withdraw($request->all());

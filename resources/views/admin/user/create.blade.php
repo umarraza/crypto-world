@@ -92,13 +92,6 @@
                 </div>
             </div><!--form-group-->
             <div class="form-group row">
-                <label for="user_name" class="col-md-2 col-form-label">@lang('User Name')</label>
-
-                <div class="col-md-10">
-                    <input type="text" name="user_name" id="user_name" class="form-control" placeholder="{{ __('User Name') }}" maxlength="100" autocomplete="new-password" />
-                </div>
-            </div><!--form-group-->
-            <div class="form-group row">
                     <label for="password" class="col-md-2 col-form-label">@lang('Password')</label>
 
                     <div class="col-md-10">

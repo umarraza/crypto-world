@@ -7,7 +7,7 @@
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     {{ Form::open(array('route' => 'user.payment.withdraw.save','class' => 'kt-form')) }}
         <div class="form-group row">
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="form-group{{ $errors->has('withdraw_amount') ? ' has-error' : '' }}">
                     {!! Form::label('withdraw_amount', 'Withdraw Amount') !!}
                     {!! Form::number('withdraw_amount', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => 'Please enter withdraw amount']) !!}

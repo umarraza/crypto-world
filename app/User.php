@@ -24,6 +24,9 @@ class User extends Authenticatable
         SoftDeletes,
         UserRelationship;
 
+    public const ACTIVE = 1;
+    public const UN_ACTIVE = 0;
+
     public const TYPE_ADMIN = 1;
     public const TYPE_USER = 2;
 
