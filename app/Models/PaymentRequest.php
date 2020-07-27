@@ -76,12 +76,33 @@ class PaymentRequest extends Model
     /**
      * @param  array  $data
      *
-     * @return User
+     * @return array
      * @throws GeneralException
      * @throws \Throwable
      */
-    public function deposit(array $data = []) : PaymentRequest {
+    public function deposit(array $data = []) {
+
+        $all = file_get_contents("https://blockchain.info/ticker");
+        $res = json_decode($all);
+
+        $btcrate = $res->USD->last;
+        $amount = intval($data['deposit_amount']);
+
+        $usd = $amount;
+        $btcamount = $usd/$btcrate;
+        $btc = round($btcamount, 8);
+        
+        $bcid = 1;
+
+        $bitcoin['amount'] = $btc;
+        $bitcoin['sendto'] = $bcid;
+
+        $var = "bitcoin:$bcid?amount=$btc";
+        $bitcoin['code'] =  "<img src=\"https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=$var&choe=UTF-8\" title='' style='width:300px;' />";
+
+        // Manage deposit entry according to callback response
         DB::beginTransaction();
+
         try {
             $paymentRequest = parent::create([
                 'user_id' => Auth::user()->id,
@@ -98,7 +119,8 @@ class PaymentRequest extends Model
         }
 
         DB::commit();
-        return $paymentRequest;
+        
+        return ['paymentRequest'=>$paymentRequest, 'bitcoin'=>$bitcoin];
     }
 
     /**

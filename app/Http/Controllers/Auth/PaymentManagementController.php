@@ -72,15 +72,13 @@ class PaymentManagementController extends Controller
      */
     public function depositAmount(DepositPaymentRequest $request) {
 
-        // $payment = $this->payment->store($request->all());
-
         if ($request->deposit_amount < 100) {
             return redirect()->back()->withFlashDanger(__('Minimum amount to deposit is $100.'));
         }
 
-        $paymentRequest = $this->paymentRequest->deposit($request->all());
+        $model = $this->paymentRequest->deposit($request->all());
 
-        return redirect()->route('user.home')->withFlashSuccess(__('The payment was deposited successfully.'));
+        return view('auth.payment.bitcoin')->withBitcoin($model['bitcoin']);
     }
 
     /**

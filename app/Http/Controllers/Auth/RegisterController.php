@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Illuminate\Support\Facades\Cookie;
-use App\Notifications\User\Register;
+use App\Notifications\User\WelcomeMail;
 
 
 class RegisterController extends Controller
@@ -111,7 +111,12 @@ class RegisterController extends Controller
                 $found = true;
                 $refferdById = $userIds[$index]; 
 
-                return $this->registerUser($data,$refferdById);
+                $user =  $this->registerUser($data,$refferdById);
+                if ($user) {
+                    $user->notify(new WelcomeMail());
+                    return $user;
+                }
+            
             } else {
 
                 $ids = User::where('referred_by', $userIds[$index])->where('payment_status', Payment::PAID)->pluck('id')->toArray();
@@ -146,8 +151,6 @@ class RegisterController extends Controller
                 'original_reffered_by' => $this->refferedByUser(),
                 'password'      => Hash::make($data['password']),
             ]);
-
-            $user->notify(new Register());
 
             if($user) {
                 
