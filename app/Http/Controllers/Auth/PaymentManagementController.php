@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use CoinGate\CoinGate;
 use App\Models\Payment;
 use App\Models\PaymentRequest;
+use App\Models\Roi;
+use App\Models\TeamBonus;
 use App\Http\Requests\Auth\WithdrawPaymentRequest;
 use App\Http\Requests\Auth\DepositPaymentRequest;
 use Illuminate\Support\Facades\Auth;
@@ -70,13 +72,60 @@ class PaymentManagementController extends Controller
      */
     public function depositAmount(DepositPaymentRequest $request) {
 
-        $payment = $this->payment->store($request->all());
+        // $payment = $this->payment->store($request->all());
 
-        if ($payment) {
+        // if ($payment) {
             $paymentRequest = $this->paymentRequest->deposit($request->all());
-        }
+        // }
 
         return redirect()->route('user.home')->withFlashSuccess(__('The payment was deposited successfully.'));
+    }
+
+    /**
+     * @param  DepositPaymentRequest  $request
+     *
+     * @return mixed
+     * @throws \App\Exceptions\GeneralException
+     * @throws \Throwable
+     */
+    public function transferRoiPayment() {
+        
+        $user = Auth::user();
+        $request['deposit_amount'] = Roi::where('user_id',$user->id)
+                                        ->where('status',0)
+                                        ->sum('amount');
+
+        $payment = $this->payment->store($request);
+
+        $roi = Roi::where('user_id',$user->id)
+                        ->where('status',0)
+                        ->update(['status'=>1]);
+
+
+        return redirect()->route('user.home')->withFlashSuccess(__('The ROI payment was transferred successfully.'));
+    }
+
+    /**
+     * @param  DepositPaymentRequest  $request
+     *
+     * @return mixed
+     * @throws \App\Exceptions\GeneralException
+     * @throws \Throwable
+     */
+    public function transferTeamBonusPayment() {
+        $user = Auth::user();
+        $request['deposit_amount'] = TeamBonus::where('to_user_id',$user->id)
+                                            ->where('status',0)
+                                            ->sum('amount');
+
+        $payment = $this->payment->store($request);
+
+        $roi = TeamBonus::where('to_user_id',$user->id)
+                        ->where('status',0)
+                        ->update(['status'=>1]);
+
+
+        return redirect()->route('user.home')->withFlashSuccess(__('The Team Bonus payment was transferred successfully.'));
     }
 
     /**
@@ -93,5 +142,19 @@ class PaymentManagementController extends Controller
     public function depositHistory() {
         return view('auth.payment.history.deposit')
             ->withPaymentRequests(Auth::user()->paymentHistory->where('type', PaymentRequest::DEPOSIT));
+    }
+
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function roiHistory() {
+        return view('auth.payment.history.roi')
+            ->withPaymentRequests(Auth::user()->roi);
+    }
+
+    public function teamBonusHistory() {
+        return view('auth.payment.history.teamBonus')
+            ->withPaymentRequests(Auth::user()->teamBonus);
     }
 }

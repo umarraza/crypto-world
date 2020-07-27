@@ -4,7 +4,7 @@
     <!--Begin::Row-->
     @cannot('view backend')
         <div class="row">
-            <div class="col-xl-4">
+            <div class="col-sm-12 col-md-12 col-xl-12">
                 <!--begin::Stats Widget 13-->
                 <a href="javascript::void(0)" class="card card-custom bg-danger bg-hover-state-danger card-stretch gutter-b">
                     <!--begin::Body-->
@@ -27,7 +27,55 @@
                 </a>
                 <!--end::Stats Widget 13-->
             </div>
-            <div class="col-xl-4">
+            <div class="col-sm-6 col-md-6 col-xl-6">
+                <!--begin::Stats Widget 14-->
+                <a href="javascript::void(0)" class="card card-custom bg-success bg-hover-state-primary card-stretch gutter-b">
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
+                            <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Layout/Layout-4-blocks.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                    <rect fill="#000000" x="4" y="4" width="7" height="7" rx="1.5"></rect>
+                                    <path d="M5.5,13 L9.5,13 C10.3284271,13 11,13.6715729 11,14.5 L11,18.5 C11,19.3284271 10.3284271,20 9.5,20 L5.5,20 C4.67157288,20 4,19.3284271 4,18.5 L4,14.5 C4,13.6715729 4.67157288,13 5.5,13 Z M14.5,4 L18.5,4 C19.3284271,4 20,4.67157288 20,5.5 L20,9.5 C20,10.3284271 19.3284271,11 18.5,11 L14.5,11 C13.6715729,11 13,10.3284271 13,9.5 L13,5.5 C13,4.67157288 13.6715729,4 14.5,4 Z M14.5,13 L18.5,13 C19.3284271,13 20,13.6715729 20,14.5 L20,18.5 C20,19.3284271 19.3284271,20 18.5,20 L14.5,20 C13.6715729,20 13,19.3284271 13,18.5 L13,14.5 C13,13.6715729 13.6715729,13 14.5,13 Z" fill="#000000" opacity="0.3"></path>
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">Total Team Bonus</div>
+                        <div class="font-weight-bold text-inverse-white font-size-sm">{{ auth()->user()->getTeamBonus() }}</div>
+                    </div>
+                    <!--end::Body-->
+                </a>
+                <!--end::Stats Widget 14-->
+            </div>
+            <div class="col-sm-6 col-md-6 col-xl-6">
+                <!--begin::Stats Widget 15-->
+                <a href="javascript::void(0)" class="card card-custom bg-primary bg-hover-state-success card-stretch gutter-b">
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">
+                            <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Media/Equalizer.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24"></rect>
+                                    <rect fill="#000000" opacity="0.3" x="13" y="4" width="3" height="16" rx="1.5"></rect>
+                                    <rect fill="#000000" x="8" y="9" width="3" height="11" rx="1.5"></rect>
+                                    <rect fill="#000000" x="18" y="11" width="3" height="9" rx="1.5"></rect>
+                                    <rect fill="#000000" x="3" y="13" width="3" height="7" rx="1.5"></rect>
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">Total ROI</div>
+                        <div class="font-weight-bold text-inverse-white font-size-sm">{{ auth()->user()->getTotalRoi() }}</div>
+                    </div>
+                    <!--end::Body-->
+                </a>
+                <!--end::Stats Widget 15-->
+            </div>
+            <div class="col-sm-6 col-md-6 col-xl-6">
                 <!--begin::Stats Widget 14-->
                 <a href="javascript::void(0)" class="card card-custom bg-primary bg-hover-state-primary card-stretch gutter-b">
                     <!--begin::Body-->
@@ -43,14 +91,17 @@
                             </svg>
                             <!--end::Svg Icon-->
                         </span>
-                        <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">Team Bonus</div>
-                        <div class="font-weight-bold text-inverse-white font-size-sm">{{ auth()->user()->getTeamBonus() }}</div>
+                        <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">Daily Team Bonus</div>
+                        <div class="font-weight-bold text-inverse-white font-size-sm">{{ auth()->user()->getDailyTeamBonus() }}
+                            <button onclick="window.location.href='{{ url('user/payment/team/bonus/transfer') }}'" class="pull-right" >Transfer</button>
+                        </div>
                     </div>
                     <!--end::Body-->
                 </a>
                 <!--end::Stats Widget 14-->
             </div>
-            <div class="col-xl-4">
+            
+            <div class="col-sm-6 col-md-6 col-xl-6">
                 <!--begin::Stats Widget 15-->
                 <a href="javascript::void(0)" class="card card-custom bg-success bg-hover-state-success card-stretch gutter-b">
                     <!--begin::Body-->
@@ -68,8 +119,11 @@
                             </svg>
                             <!--end::Svg Icon-->
                         </span>
-                        <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">ROI Bonus</div>
-                        <div class="font-weight-bold text-inverse-white font-size-sm">{{ auth()->user()->getTotalRoi() }}</div>
+                        <div class="text-inverse-white font-weight-bolder font-size-h5 mb-2 mt-5">Daily ROI</div>
+                        <div class="font-weight-bold text-inverse-white font-size-sm">{{ auth()->user()->getDailyRoi() }}
+                            <button onclick="window.location.href='{{ url('user/payment/roi/transfer') }}'" class="pull-right" >Transfer</button>
+                        </div>
+                        
                     </div>
                     <!--end::Body-->
                 </a>
@@ -77,7 +131,7 @@
             </div>
         </div>
         <div class="row mt-5">
-            <div class="col-xl-6">
+            <div class="col-sm-6 col-md-6 col-xl-6">
                 <!--begin::Stats Widget 13-->
                 <a href="javascript::void(0)" class="card card-custom bg-warning bg-hover-state-danger card-stretch gutter-b">
                     <!--begin::Body-->
@@ -100,9 +154,9 @@
                 </a>
                 <!--end::Stats Widget 13-->
             </div>
-            <div class="col-xl-6">
+            <div class="col-sm-6 col-md-6 col-xl-6">
                 <!--begin::Stats Widget 13-->
-                <a href="javascript::void(0)" class="card card-custom bg-info bg-hover-state-danger card-stretch gutter-b">
+                <a href="javascript::void(0)" class="card card-custom bg-danger bg-hover-state-danger card-stretch gutter-b">
                     <!--begin::Body-->
                     <div class="card-body">
                         <span class="svg-icon svg-icon-white svg-icon-3x ml-n1">

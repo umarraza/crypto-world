@@ -28,4 +28,12 @@ class TeamBonus extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    /**
+     * @return string
+     */
+    public function fromUser()
+    {
+        return $this->hasOne(User::class,'id','from_user_id');
+    }
 }

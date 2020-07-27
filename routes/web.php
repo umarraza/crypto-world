@@ -20,6 +20,8 @@ Auth::routes();
 
 Route::get('percentage', [CronController::class, 'getPercentage'])->name('percentage');
 
+
+
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('profile/{user}/edit', [ProfileController::class, 'profile'])->name('profile');
 Route::patch('profile/{user}', [ProfileController::class, 'update'])->name('profile.update');
@@ -63,8 +65,16 @@ Route::group(['middleware' => [config('access.users.customer_role'),config('acce
     Route::get('payment/withdraw', 'PaymentManagementController@withdraw')->name('payment.withdraw');
     Route::get('payment/deposit', 'PaymentManagementController@deposit')->name('payment.deposit');
 
+    Route::get('payment/roi/transfer', 'PaymentManagementController@transferRoiPayment')->name('payment.roi.transfer');
+
+    Route::get('payment/team/bonus/transfer', 'PaymentManagementController@transferTeamBonusPayment')->name('payment.team.bonus.transfer');
+
     Route::get('payment/deposit/history', 'PaymentManagementController@depositHistory')->name('payment.deposit.history');
     Route::get('payment/withdraw/history', 'PaymentManagementController@withdrawHistory')->name('payment.withdraw.history');
+
+
+    Route::get('payment/roi/history', 'PaymentManagementController@roiHistory')->name('payment.roi.history');
+    Route::get('payment/team/bonus/history', 'PaymentManagementController@teamBonusHistory')->name('payment.team.bonus.history');
 
     Route::post('payment/withdraw/amount', 'PaymentManagementController@withDrawAmount')->name('payment.withdraw.save');
     Route::post('payment/deposit/amount', 'PaymentManagementController@depositAmount')->name('payment.deposit.save');

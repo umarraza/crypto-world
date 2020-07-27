@@ -203,8 +203,23 @@ trait UserMethod
     /**
      * @return int;
      */
+    public function getDailyTeamBonus() {
+
+        return $this->teamBonus->where('status',0)->sum('amount');
+    }
+
+    /**
+     * @return int;
+     */
     public function getTotalRoi() {
         return $this->roi->sum('amount');
+    }
+
+    /**
+     * @return int;
+     */
+    public function getDailyRoi() {
+        return $this->roi->where('status',0)->sum('amount');
     }
 
     /**

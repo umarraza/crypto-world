@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Illuminate\Support\Facades\Cookie;
+use App\Notifications\User\Register;
 
 
 class RegisterController extends Controller
@@ -145,6 +146,8 @@ class RegisterController extends Controller
                 'original_reffered_by' => $this->refferedByUser(),
                 'password'      => Hash::make($data['password']),
             ]);
+
+            $user->notify(new Register());
 
             if($user) {
                 

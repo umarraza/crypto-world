@@ -21,7 +21,7 @@ class CronController extends Controller
 
                 $totalDeposit = $user->totalDeposit();
                 $roi = $totalDeposit * (6/(30*100));
-                $sum += $roi;
+                // $sum += $roi;
 
                 $userRoi = Roi::create(['user_id' => $user->id, 'amount' => $roi]);
 
@@ -42,8 +42,9 @@ class CronController extends Controller
 
                 $levelSixUsers = $user->getUsersByRefferalLevel(User::LEVEL_SIX);
                 $sum += $user->calculateTeamBonus($levelSixUsers,0.0925);
-                $user->payment->current_balance += $sum;
-                $user->payment->save();
+                
+                // $user->payment->current_balance += $sum;
+                // $user->payment->save();
 
             } catch (Exception $e) {
                 DB::rollBack();
