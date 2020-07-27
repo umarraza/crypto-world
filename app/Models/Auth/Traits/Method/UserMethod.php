@@ -240,7 +240,7 @@ trait UserMethod
 
         switch ($level) {
             case self::LEVEL_ONE:
-                return '3%';
+                return '2%';
             break;
 
             case self::LEVEL_TWO:
@@ -248,19 +248,19 @@ trait UserMethod
             break;
 
             case self::LEVEL_THREE:
-                return '0.75%';
+                return '1%';
             break;
 
             case self::LEVEL_FOUR:
-                return '0.375%';
+                return '0.75%';
             break;
 
             case self::LEVEL_FIVE:
-                return '0.185%';
+                return '0.5%';
             break;
 
             case self::LEVEL_SIX:
-                return '0.0925%';
+                return '0.25%';
             break;
         }
     }
@@ -275,20 +275,23 @@ trait UserMethod
         switch ($level) {
             case self::LEVEL_ONE:
                 return self::where('referred_by', $this->id)
-                    ->where('payment_status', Payment::PAID)->get();
+                    // ->where('payment_status', Payment::PAID)
+                    ->get();
             break;
 
             case self::LEVEL_TWO:
                 $userIds = self::where('referred_by', $this->id)->pluck('id');
                 return self::whereIn('referred_by', $userIds)
-                    ->where('payment_status', Payment::PAID)->get();
+                    // ->where('payment_status', Payment::PAID)
+                    ->get();
             break;
 
             case self::LEVEL_THREE:
                 $userIds = self::where('referred_by', $this->id)->pluck('id');
                 $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
                 return self::whereIn('referred_by', $userIds)
-                    ->where('payment_status', Payment::PAID)->get();
+                    // ->where('payment_status', Payment::PAID)
+                    ->get();
             break;
 
             case self::LEVEL_FOUR:
@@ -296,7 +299,8 @@ trait UserMethod
                 $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
                 $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
                 return self::whereIn('referred_by', $userIds)
-                    ->where('payment_status', Payment::PAID)->get();
+                    // ->where('payment_status', Payment::PAID)
+                    ->get();
             break;
 
             case self::LEVEL_FIVE:
@@ -305,7 +309,8 @@ trait UserMethod
                 $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
                 $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
                 return self::whereIn('referred_by', $userIds)
-                    ->where('payment_status', Payment::PAID)->get();
+                    // ->where('payment_status', Payment::PAID)
+                    ->get();
             break;
 
             case self::LEVEL_SIX:
@@ -315,7 +320,8 @@ trait UserMethod
                 $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
                 $userIds = self::whereIn('referred_by', $userIds)->pluck('id');
                 return self::whereIn('referred_by', $userIds)
-                    ->where('payment_status', Payment::PAID)->get();
+                    // ->where('payment_status', Payment::PAID)
+                    ->get();
             break;
         }
     }

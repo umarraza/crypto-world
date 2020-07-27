@@ -181,7 +181,7 @@
         <div class="row">
             <div class="col-lg-12 col-xl-12 order-lg-1 order-xl-1 mt-5">
                 <h4>Refferal Link<h4/>
-                <input type="text" class="form-control mb-5" readonly value="{{ url('/') . '/?ref=' . encrypt(auth()->user()->id) }}">
+                <input type="text" class="form-control mb-5" readonly value="{{ url('/register') . '?ref=' . encrypt(auth()->user()->id) }}">
             </div>
         </div>
     @endcannot

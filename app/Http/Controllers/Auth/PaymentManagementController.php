@@ -74,15 +74,17 @@ class PaymentManagementController extends Controller
 
         // $payment = $this->payment->store($request->all());
 
-        // if ($payment) {
-            $paymentRequest = $this->paymentRequest->deposit($request->all());
-        // }
+        if ($request->deposit_amount < 100) {
+            return redirect()->back()->withFlashDanger(__('Minimum amount to deposit is $100.'));
+        }
+
+        $paymentRequest = $this->paymentRequest->deposit($request->all());
 
         return redirect()->route('user.home')->withFlashSuccess(__('The payment was deposited successfully.'));
     }
 
     /**
-     * @param  DepositPaymentRequest  $request
+     * @param  void
      *
      * @return mixed
      * @throws \App\Exceptions\GeneralException
@@ -106,7 +108,7 @@ class PaymentManagementController extends Controller
     }
 
     /**
-     * @param  DepositPaymentRequest  $request
+     * @param  void
      *
      * @return mixed
      * @throws \App\Exceptions\GeneralException

@@ -20,28 +20,28 @@ class CronController extends Controller
                 $sum = 0;
 
                 $totalDeposit = $user->totalDeposit();
-                $roi = $totalDeposit * (6/(30*100));
+                $roi = $totalDeposit * (7/(30*100));
                 // $sum += $roi;
 
                 $userRoi = Roi::create(['user_id' => $user->id, 'amount' => $roi]);
 
                 $levelOneUsers = $user->getUsersByRefferalLevel(User::LEVEL_ONE);
-                $sum += $user->calculateTeamBonus($levelOneUsers,3); 
+                $sum += $user->calculateTeamBonus($levelOneUsers,2); 
 
                 $leveltWOUsers = $user->getUsersByRefferalLevel(User::LEVEL_TWO);
                 $sum += $user->calculateTeamBonus($leveltWOUsers,1.5); 
 
                 $levelThreeUsers = $user->getUsersByRefferalLevel(User::LEVEL_THREE);
-                $sum += $user->calculateTeamBonus($levelThreeUsers,0.75);
+                $sum += $user->calculateTeamBonus($levelThreeUsers,1);
                 
                 $levelFourUsers = $user->getUsersByRefferalLevel(User::LEVEL_FOUR);
-                $sum += $user->calculateTeamBonus($levelFourUsers,0.375);
+                $sum += $user->calculateTeamBonus($levelFourUsers,0.75);
 
                 $levelFiveUsers = $user->getUsersByRefferalLevel(User::LEVEL_FIVE);
-                $sum += $user->calculateTeamBonus($levelFiveUsers,0.185);
+                $sum += $user->calculateTeamBonus($levelFiveUsers,0.5);
 
                 $levelSixUsers = $user->getUsersByRefferalLevel(User::LEVEL_SIX);
-                $sum += $user->calculateTeamBonus($levelSixUsers,0.0925);
+                $sum += $user->calculateTeamBonus($levelSixUsers,0.25);
                 
                 // $user->payment->current_balance += $sum;
                 // $user->payment->save();

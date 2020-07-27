@@ -5,12 +5,12 @@
     <div class="kt-login__container">
         <div class="kt-login__logo">
             <a href="#">
-                <img src="assets/media/logos/logo-5.png">
+                <img style="height: 150px" src="assets/media/logos/logo-5.png">
             </a>
         </div>
         <div class="kt-login__signin">
             <div class="kt-login__head">
-                <h3 class="kt-login__title">Sign In To Admin</h3>
+                <h3 class="kt-login__title">Login To Dashboard</h3>
             </div>
             {{ Form::open(array('route' => 'login','class' => 'kt-form')) }}
                 <div class="input-group">

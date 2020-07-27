@@ -13,7 +13,8 @@ use App\Http\Controllers\Auth\Admin\UserController;
  */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return redirect('/login');
 });
 
 Auth::routes();
