@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\User;
+use App\Helpers\BTCAddressValidatorValidator;
 use Illuminate\Support\Arr;
 use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +78,7 @@ class RegisterController extends Controller
             'street' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
             'post_code' => ['required', 'string', 'max:255'],
+            'btc_address' => ['required', 'string', 'max:255'],
             'user_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -92,6 +94,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // $isValidAddress = BTCAddressValidatorValidator::isValid($data['btc_address']);
+        
+        // if (!$isValidAddress) {
+        //     return redirect()->back()->withErrors('Invalid BTC Address, Please enter valid bitcoin address','invalid btc');
+        // }
+
         DB::beginTransaction();
 
         $index = 0;     

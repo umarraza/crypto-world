@@ -27,6 +27,25 @@ class PaymentManagementController extends Controller
     }
 
     /**
+     * Proccess payment deposit.
+     */
+    public function ipnbtc() {
+        
+        $track = $_GET['invoice_id'];
+        $secret = $_GET['secret'];
+        $address = $_GET['address'];
+        $value = $_GET['value'];
+        $confirmations = $_GET['confirmations'];
+        $value_in_btc = $_GET['value'] / 100000000;
+
+        $trx_hash = $_GET['transaction_hash'];
+        Storage::put('btcresponse.txt', json_encode($confirmations));
+
+        // if response 200, change deposit status
+    }
+
+
+    /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function withdraw() {
@@ -77,6 +96,10 @@ class PaymentManagementController extends Controller
         }
 
         $model = $this->paymentRequest->deposit($request->all());
+
+        if (!$model) {
+            return redirect()->route('user.home')->withFlashDanger('BLOCKCHAIN API HAVING ISSUE. PLEASE TRY LATER');
+        }
 
         return view('auth.payment.bitcoin')->withBitcoin($model['bitcoin']);
     }

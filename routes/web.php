@@ -79,7 +79,20 @@ Route::group(['middleware' => [config('access.users.customer_role'),config('acce
 
     Route::post('payment/withdraw/amount', 'PaymentManagementController@withDrawAmount')->name('payment.withdraw.save');
     Route::post('payment/deposit/amount', 'PaymentManagementController@depositAmount')->name('payment.deposit.save');
-});
 
-    // Route::get('payment/deposit/history', 'Auth\PaymentManagementController@depositHistory')->name('payment.deposit.history');
-    // Route::get('payment/withdraw/history', 'Auth\PaymentManagementController@withdrawHistory')->name('payment.withdraw.history');
+
+    Route::get('ipnbtc', 'PaymentManagementController@ipnbtc');
+
+
+
+
+
+
+
+
+
+
+
+
+
+});

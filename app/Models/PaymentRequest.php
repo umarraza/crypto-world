@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\User;
 use DB;
+use Storage;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentRequest extends Model
@@ -82,25 +83,6 @@ class PaymentRequest extends Model
      */
     public function deposit(array $data = []) {
 
-        $all = file_get_contents("https://blockchain.info/ticker");
-        $res = json_decode($all);
-
-        $btcrate = $res->USD->last;
-        $amount = intval($data['deposit_amount']);
-
-        $usd = $amount;
-        $btcamount = $usd/$btcrate;
-        $btc = round($btcamount, 8);
-        
-        $bcid = 1;
-
-        $bitcoin['amount'] = $btc;
-        $bitcoin['sendto'] = $bcid;
-
-        $var = "bitcoin:$bcid?amount=$btc";
-        $bitcoin['code'] =  "<img src=\"https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=$var&choe=UTF-8\" title='' style='width:300px;' />";
-
-        // Manage deposit entry according to callback response
         DB::beginTransaction();
 
         try {
@@ -119,6 +101,41 @@ class PaymentRequest extends Model
         }
 
         DB::commit();
+
+        $all = file_get_contents("https://blockchain.info/ticker");
+        $res = json_decode($all);
+
+        $btcrate = $res->USD->last;
+        $amount = intval($data['deposit_amount']);
+
+        $usd = $amount;
+        $btcamount = $usd/$btcrate;
+        $btc = round($btcamount, 8);
+        
+        $bcid = auth()->user()->id;
+
+        $bitcoin['amount'] = $btc;
+        $bitcoin['sendto'] = $bcid;
+
+        $var = "bitcoin:$bcid?amount=$btc";
+        $bitcoin['code'] =  "<img src=\"https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=$var&choe=UTF-8\" title='' style='width:300px;' />";
+
+        $secret = 'ZzsMLGKe162CfA5EcG6j';
+
+        $xpub = 'xpub6CgNjrZMcXv2B9LRQamKmqKreBn51CKQ25hzXWMZ6tSXZ9nH1hg1UQsXNsGmEZZjKB5v869KERQyF17deGK2m5Fz2Q4JTjR8wpFgymPqKiY';
+        $api_key = '10712c83-d168-4700-862a-ff97883d2463';
+        
+        $callback_url = base_url().'?/ipnbtc?invoice_id='.$paymentRequest->id.'&secret='.$secret;
+        
+        $root_url = base_url();
+        
+        $parameters = 'xpub=' .$xpub. '&callback=' .urlencode($callback_url). '&key=' .$api_key;
+        
+        $response = file_get_contents($root_url . '?' . $parameters);
+        
+        if (!$response) {
+            return false;
+        }
         
         return ['paymentRequest'=>$paymentRequest, 'bitcoin'=>$bitcoin];
     }

@@ -18,7 +18,7 @@
         <div class="col-lg-2"></div>
         <div class="col-lg-8 col-xl-8">
             <div class="block block-fx-shadow text-center">
-                <a class="d-block bg-warning font-w600 text-uppercase py-5" href="javascript:void(0)" data-toggle="modal" data-target="#modal-crypto-wallet-btc">
+                <a class="d-block bg-warning font-w600 text-uppercase py-5" href="{{ route('payment.deposit.api') }}" data-toggle="modal" data-target="#modal-crypto-wallet-btc">
                     <span class="text-white">SCAN TO SEND</span>
                 </a>
                 <div class="block-content block-content-full">
