@@ -9,12 +9,12 @@
         <div class="kt-portlet__head kt-portlet__head--lg">
             <div class="kt-portlet__head-label">
                 <h3 class="kt-portlet__head-title">
-                    Refferal Users <small class="text-muted">Level {{ $level }}</small><br>
+                    Refferal Users <small class="text-muted font-20">Level {{ $level }} <span class="font-15">({{ auth()->user()->getRefferalLevelPercentage($level) }})</span></small><br>
                 </h3>
             </div>
             <div class="float-right">
-                <small class="text-muted">Sum of Bonus <b>{{ auth()->user()->getTeamBonusByUsersLevel($level) }}</b></small><br>
-                <small class="text-muted">Daily Bonus <b>{{ auth()->user()->getRefferalLevelPercentage($level) }}</b></small>
+                <small class="text-muted font-17">Sum of Bonus <b>${{ auth()->user()->getTeamBonusByUsersLevel($level) }}</b></small><br>
+                {{-- <small class="text-muted">Daily Bonus <b>{{ auth()->user()->getRefferalLevelPercentage($level) }}</b></small> --}}
             </div>
         </div>
         <div class="kt-portlet__body">
@@ -38,7 +38,7 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->originalReffereName($user->original_reffered_by) }}</td>
                             <td><span class="badge badge-success">{{ $user->email }}</span></td>
-                            <td><span class="badge badge-primary">{{ $user->totalDeposit() }}</span></td>
+                            <td><span class="badge badge-primary">${{ $user->totalDeposit() }}</span></td>
                         </tr>
                         @endforeach
                     </tbody>

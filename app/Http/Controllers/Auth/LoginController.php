@@ -64,10 +64,8 @@ class LoginController extends Controller
 
             return redirect()->route('login')->withFlashDanger(__('Your account has been deactivated.'));
         }
-
-        if (!$user->isAdmin()) {
-            $user->generateTwoFactorCode();
-            $user->notify(new TwoFactorCode());
-        }
+        
+        $user->generateTwoFactorCode();
+        $user->notify(new TwoFactorCode());
     }
 }

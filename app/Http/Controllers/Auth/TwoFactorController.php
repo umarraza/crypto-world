@@ -27,6 +27,9 @@ class TwoFactorController extends Controller
         {
             $user->resetTwoFactorCode();
 
+            if ($user->isAdmin()) {
+                return redirect()->route('admin.home');
+            }
             return redirect()->route('user.home');
         }
 

@@ -28,7 +28,7 @@
                         @foreach($withdrawRequests as $request)
                         <tr>
                             <td>{{ $request->user->name }}</td>
-                            <td>{{ $request->amount }}</td>
+                            <td>${{ $request->amount }}</td>
                             <td>{{ $request->date }}</td>
                             <td>{!! $request->status_label !!}</td>
                             <td>

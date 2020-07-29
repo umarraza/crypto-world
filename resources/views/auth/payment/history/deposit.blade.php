@@ -12,7 +12,7 @@
                 </h3>
             </div>
             <div class="float-right">
-                <small class="text-muted font-17">Total Deposit: <b>{{ auth()->user()->totalDeposit() }}</b></small><br>
+                <small class="text-muted font-17">Total Deposit: <b>${{ auth()->user()->totalDeposit() }}</b></small><br>
             </div>
         </div>
         <div class="kt-portlet__body">
@@ -28,7 +28,7 @@
                         @foreach($paymentRequests as $request)
                         <tr>
                             <td>{{ $request->date }}</td>
-                            <td><span class="badge badge-primary">{{ $request->amount }}</span></td>
+                            <td><span class="badge badge-primary">${{ $request->amount }}</span></td>
                         </tr>
                         @endforeach
                     </tbody>

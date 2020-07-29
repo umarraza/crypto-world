@@ -36,7 +36,7 @@ Route::resource('verify', 'Auth\TwoFactorController')->only(['index', 'store']);
 
 
 // Admin Routes
-Route::group(['middleware' => config('access.users.super_admin'),'prefix' => 'admin', 'as' => 'admin.','namespace' => 'Auth\Admin'], function () {
+Route::group(['middleware' => [config('access.users.super_admin'),config('access.two_factor_auth')],'prefix' => 'admin', 'as' => 'admin.','namespace' => 'Auth\Admin'], function () {
     
     Route::get('home', [HomeController::class, 'index'])->name('home');
     
@@ -82,17 +82,4 @@ Route::group(['middleware' => [config('access.users.customer_role'),config('acce
 
 
     Route::get('ipnbtc', 'PaymentManagementController@ipnbtc');
-
-
-
-
-
-
-
-
-
-
-
-
-
 });

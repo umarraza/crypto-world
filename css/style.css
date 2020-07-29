@@ -3,5 +3,47 @@
 }
 
 .font-17{
-    font-size: 17px;
+    font-size: 17px !important;
+}
+
+.font-25{
+    font-size: 25px;
+}
+
+.font-20{
+    font-size: 20px !important;
+}
+
+.font-23{
+    font-size: 23px !important;
+}
+
+.font-15{
+    font-size: 15px !important;
+}
+
+.btc-rate-position{
+    position: relative;
+    left: 11%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.transfer-payment-btn{
+    background: #000b65;
+    border: 1px solid #0014ff;
+    border-radius: 10px;
+    padding: 10px 25px;
+    color: #fff;
+    font-size: 18px;
+}
+
+.daily-background{
+    background: linear-gradient(#ffe59a,#20c1c3);
+}
+
+.total-amount-boxes-background{
+    background: linear-gradient(#eeaeca,#94bbe9);
 }

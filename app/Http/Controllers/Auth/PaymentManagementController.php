@@ -63,6 +63,10 @@ class PaymentManagementController extends Controller
 
         $user = Auth::user();
 
+        if (!auth()->user()->btc_address) {
+            return redirect('profile/'.auth()->user()->id.'/edit')->withFlashDanger(__('You must provide your BTC address to proccess your withdraw.'));
+        }
+
         if ($user->payment->current_balance == Payment::DEFAULT_BALANCE_ZERO) {
             return redirect()->back()->withFlashDanger(__('You do not have any balance to withdraw.'));
         }
@@ -176,6 +180,9 @@ class PaymentManagementController extends Controller
             ->withPaymentRequests(Auth::user()->roi);
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function teamBonusHistory() {
         return view('auth.payment.history.teamBonus')
             ->withPaymentRequests(Auth::user()->teamBonus);

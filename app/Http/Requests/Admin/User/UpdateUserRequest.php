@@ -33,7 +33,7 @@ class UpdateUserRequest extends FormRequest
             'user_name' => ['required', 'string', 'max:255'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            // 'mobile_number' => 'required|regex:/(01)[0-9]{9}/',
+            'email' => ['required', 'string', 'max:255'],
             'mobile_number' => ['required', 'string', 'max:255'],
             'street' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],

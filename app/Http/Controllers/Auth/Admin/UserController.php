@@ -139,6 +139,8 @@ class UserController extends Controller
      */
     public function unpaid(ManageUserRequest $request) {
 
+        // dd(User::getUsersByRole(config('access.users.customer_role')));
+
         return view('admin.user.unpaid')
             ->withUsers(User::getUsersByRole(config('access.users.customer_role')));
     }
@@ -148,10 +150,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function usersByLevel($level) {
-
-        $level = intval($level);
-        
+    public function usersByLevel($level) {        
         if ($level>User::LEVEL_SIX || $level<User::LEVEL_ONE) {
             return redirect()->route('user.home')->withFlashDanger(__('Invalid level, please select valid level.'));
         }

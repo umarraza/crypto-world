@@ -35,6 +35,19 @@
             </div><!--form-group-->
 
             <div class="form-group row">
+                <label for="email" class="col-md-2 col-form-label">@lang('Email')</label>
+
+                <div class="col-md-10">
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" autocomplete="name" autofocus>
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div><!--form-group-->
+
+            <div class="form-group row">
                 <label for="user_name" class="col-md-2 col-form-label">@lang('User Name')</label>
 
                 <div class="col-md-10">

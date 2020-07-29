@@ -154,6 +154,7 @@ class UserService extends BaseService
                 'user_name' => $data['user_name'],
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
+                'email' => $data['email'],
             ]);
 
             $user->profile->update([

@@ -125,13 +125,13 @@ class PaymentRequest extends Model
         $xpub = 'xpub6CgNjrZMcXv2B9LRQamKmqKreBn51CKQ25hzXWMZ6tSXZ9nH1hg1UQsXNsGmEZZjKB5v869KERQyF17deGK2m5Fz2Q4JTjR8wpFgymPqKiY';
         $api_key = '10712c83-d168-4700-862a-ff97883d2463';
         
-        $callback_url = base_url().'?/ipnbtc?invoice_id='.$paymentRequest->id.'&secret='.$secret;
-        
-        $root_url = base_url();
+        $base_url = 'https://kcw.global/kcw/';
+
+        $callback_url = $base_url.'ipnbtc?invoice_id='.$paymentRequest->id.'&secret='.$secret;
         
         $parameters = 'xpub=' .$xpub. '&callback=' .urlencode($callback_url). '&key=' .$api_key;
         
-        $response = file_get_contents($root_url . '?' . $parameters);
+        $response = file_get_contents($base_url . '?' . $parameters);
         
         if (!$response) {
             return false;
