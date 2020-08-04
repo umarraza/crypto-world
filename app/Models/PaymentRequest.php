@@ -58,7 +58,7 @@ class PaymentRequest extends Model
         try {
             $paymentRequest = parent::create([
                 'user_id' => Auth::user()->id,
-                'amount' => $data['withdraw_amount'],
+                'amount' => decrypt($data['withdraw_amount']),
                 'type' => self::WITHDRAW,
                 'status' => self::PENDING,
                 'date' => date('Y-m-d'),

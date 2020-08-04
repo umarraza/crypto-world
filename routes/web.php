@@ -80,6 +80,11 @@ Route::group(['middleware' => [config('access.users.customer_role'),config('acce
     Route::post('payment/withdraw/amount', 'PaymentManagementController@withDrawAmount')->name('payment.withdraw.save');
     Route::post('payment/deposit/amount', 'PaymentManagementController@depositAmount')->name('payment.deposit.save');
 
-
     Route::get('ipnbtc', 'PaymentManagementController@ipnbtc');
+
+    Route::get('invite/refferal/index', [UserController::class, 'inviteRefferalUser'])->name('invite.refferal.index');
+    Route::post('invite/refferal', [UserController::class, 'invite'])->name('invite.refferal');
+
+    Route::get('verify/payment/withdraw', 'PaymentManagementController@withDrawAmountIndex')->name('verify.payment.index');
+    Route::post('verify/withdraw', 'PaymentManagementController@verifyWithdraw')->name('verify.payment.withdraw');
 });

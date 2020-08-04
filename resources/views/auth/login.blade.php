@@ -14,7 +14,7 @@
             </div>
             {{ Form::open(array('route' => 'login','class' => 'kt-form')) }}
                 <div class="input-group">
-                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                    <input id="user_name" type="text" class="form-control @error('user_name') is-invalid @enderror" name="user_name" value="{{ old('user_name') }}" required autocomplete="email" autofocus>
                 </div>
                 <div class="input-group">
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">

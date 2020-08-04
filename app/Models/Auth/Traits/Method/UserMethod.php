@@ -117,6 +117,17 @@ trait UserMethod
     }
 
     /**
+     * Generate two factor authentication code for withdraw requests
+     * 
+     * @return int
+     */
+     public function generateWithdrawTwoFactorCode() {
+        $this->timestamps = false;
+        $this->withdraw_two_factor_code = rand(100000, 999999);
+        $this->save();
+    }
+
+    /**
      * Reset two factor authentication code
      * 
      * @return int
@@ -127,6 +138,18 @@ trait UserMethod
         $this->two_factor_code = null;
         $this->save();
     }
+
+     /**
+     * Reset two factor authentication code
+     * 
+     * @return int
+     */
+     public function resetWithdrawTwoFactorCode()
+     {
+        $this->timestamps = false;
+        $this->withdraw_two_factor_code = null;
+        $this->save();
+     }
 
     public static function getUsersByRole($type){
         $modelRole = Role::findByType($type);

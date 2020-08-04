@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Tracking App'))
+@section('title', __('Crypto World'))
 
 @section('content')
 <div class="content">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\VerifyPaymentWithdraw;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use CoinGate\CoinGate;
@@ -25,6 +26,44 @@ class PaymentManagementController extends Controller
         $this->payment = $payment;
         $this->paymentRequest = $paymentRequest;
     }
+
+
+    /**
+     * @param Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function withDrawAmountIndex(Request $request) {
+
+        return view('auth.withdrawTwoFactor')->withAmount($request->amount);
+    }
+
+    /**
+     * @param Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function verifyWithdraw(Request $request) {
+
+        $request->validate([
+            'withdraw_two_factor_code' => 'integer|required',
+        ]);
+
+        if($request->input('withdraw_two_factor_code') == auth()->user()->withdraw_two_factor_code)
+        {
+            $paymentRequest = $this->paymentRequest->withdraw($request->all());
+
+            auth()->user()->resetWithdrawTwoFactorCode();
+
+            return redirect()->route('user.home')->withFlashSuccess('Your request to withdraw amount sent successfully');
+        }
+
+        return redirect()->back()
+            ->withErrors(['withdraw_two_factor_code' => 
+                'The withdraw verification code you have entered does not match']);
+
+    }
+
 
     /**
      * Proccess payment deposit.
@@ -62,8 +101,8 @@ class PaymentManagementController extends Controller
     public function withDrawAmount(WithdrawPaymentRequest $request) {
 
         $user = Auth::user();
+        if (!auth()->user()->block_chain_address) {
 
-        if (!auth()->user()->btc_address) {
             return redirect('profile/'.auth()->user()->id.'/edit')->withFlashDanger(__('You must provide your BTC address to proccess your withdraw.'));
         }
 
@@ -75,8 +114,11 @@ class PaymentManagementController extends Controller
             return redirect()->back()->withFlashDanger(__('You cannot withdraw amount greater then your current amount.'));
         }
 
-        $paymentRequest = $this->paymentRequest->withdraw($request->all());
-        return redirect()->route('user.home')->withFlashSuccess(__('Your rqeuest to withdraw payment sent successfully.'));
+        $user->generateWithdrawTwoFactorCode();
+        
+        event(new VerifyPaymentWithdraw($request));
+
+        return redirect()->back()->withFlashInfo(__('Check your email to verify payment withdraw request.'));
     }
 
     /**
@@ -119,14 +161,14 @@ class PaymentManagementController extends Controller
         
         $user = Auth::user();
         $request['deposit_amount'] = Roi::where('user_id',$user->id)
-                                        ->where('status',0)
-                                        ->sum('amount');
+                ->where('status',0)
+                ->sum('amount');
 
         $payment = $this->payment->store($request);
 
         $roi = Roi::where('user_id',$user->id)
-                        ->where('status',0)
-                        ->update(['status'=>1]);
+                ->where('status',0)
+                ->update(['status'=>1]);
 
 
         return redirect()->route('user.home')->withFlashSuccess(__('The ROI payment was transferred successfully.'));

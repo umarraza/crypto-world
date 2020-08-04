@@ -68,4 +68,14 @@ class LoginController extends Controller
         $user->generateTwoFactorCode();
         $user->notify(new TwoFactorCode());
     }
+
+     /**
+     * Get the login username or email to be used by the controller.
+     *
+     * @return string
+     */
+     public function username($request)
+     {
+        return filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'user_name';
+     }
 }

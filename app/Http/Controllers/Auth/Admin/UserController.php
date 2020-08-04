@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\Profile;
 use App\Models\Auth\Role;
 use Illuminate\Http\Request;
+use App\Events\InviteRefferal;
 use App\Models\PaymentRequest;
 use App\Exceptions\GeneralException;
 use Illuminate\Support\Facades\Auth;
@@ -139,8 +140,6 @@ class UserController extends Controller
      */
     public function unpaid(ManageUserRequest $request) {
 
-        // dd(User::getUsersByRole(config('access.users.customer_role')));
-
         return view('admin.user.unpaid')
             ->withUsers(User::getUsersByRole(config('access.users.customer_role')));
     }
@@ -200,5 +199,21 @@ class UserController extends Controller
             \DB::commit();
 
         return redirect()->route('admin.user.index')->withFlashSuccess(__('The payment was deposited successfully.'));
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function inviteRefferalUser() {
+        return view('auth.invite');
+    }
+
+    /**
+     * Send refferal invitation mail
+     */
+     public function invite(Request $request) {
+
+        event(new InviteRefferal($request->email));
+        return redirect()->route('user.home')->withFlashSuccess(__('Refferal invitation sent successfully.'));
     }
 }
