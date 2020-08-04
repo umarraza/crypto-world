@@ -64,7 +64,6 @@ class PaymentManagementController extends Controller
 
     }
 
-
     /**
      * Proccess payment deposit.
      */
