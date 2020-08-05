@@ -69,12 +69,21 @@ class PaymentManagementController extends Controller
      */
     public function ipnbtc() {
         
-        $track = $_GET['invoice_id'];
-        $secret = $_GET['secret'];
-        $address = $_GET['address'];
-        $value = $_GET['value'];
-        $confirmations = $_GET['confirmations'];
-        $value_in_btc = $_GET['value'] / 100000000;
+        $invoice_id = $_GET['invoice_id'];
+        
+        $model = PaymentRequest::find($invoice_id);
+        $model->status = PaymentRequest::APPROVED;
+        $model->save();
+
+        $user = Auth::user();
+        $user->payment_status = 1;
+        $user->save();
+
+        // $secret = $_GET['secret'];
+        // $address = $_GET['address'];
+        // $value = $_GET['value'];
+        // $confirmations = $_GET['confirmations'];
+        // $value_in_btc = $_GET['value'] / 100000000;
 
         $trx_hash = $_GET['transaction_hash'];
         Storage::put('btcresponse.txt', json_encode($confirmations));

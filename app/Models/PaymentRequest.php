@@ -134,15 +134,13 @@ class PaymentRequest extends Model
             return false;
         }
     
-        
-         $response2 = json_decode($response);
+        $response2 = json_decode($response);
             
            $sendto = $response2->address;
            $bitcoin['sendto'] = $sendto;
 
         $var = "bitcoin:$sendto?amount=$btc";
         $bitcoin['code'] =  "<img src=\"https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=$var&choe=UTF-8\" title='' style='width:300px;' />";
-dd($response2);
         
         return ['paymentRequest'=>$paymentRequest, 'bitcoin'=>$bitcoin];
     }

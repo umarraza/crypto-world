@@ -21,8 +21,6 @@ Auth::routes();
 
 Route::get('percentage', [CronController::class, 'getPercentage'])->name('percentage');
 
-
-
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('profile/{user}/edit', [ProfileController::class, 'profile'])->name('profile');
 Route::patch('profile/{user}', [ProfileController::class, 'update'])->name('profile.update');

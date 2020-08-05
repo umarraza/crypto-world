@@ -181,7 +181,7 @@ trait UserMethod
      */
     public function totalDeposit() {
 
-        return $this->paymentHistory->where('type', PaymentRequest::DEPOSIT)->sum('amount');
+        return $this->paymentHistory->where('type', PaymentRequest::DEPOSIT)->where('status', PaymentRequest::APPROVED)->sum('amount');
     }
 
     /**
