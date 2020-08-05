@@ -64,6 +64,10 @@ class PaymentRequest extends Model
                 'date' => date('Y-m-d'),
             ]);
         
+            $payment = Payment::where('user_id', Auth::user()->id)->first();
+            $payment->current_balance -= $paymentRequest->amount;
+            $payment->save();
+
         } catch (Exception $e) {
             DB::rollBack();
 

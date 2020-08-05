@@ -3,6 +3,32 @@
 @section('content')
     <!--Begin::Row-->
     @cannot('view backend')
+        {{-- <div class="row mt-5">
+            <div class="col-sm-12 col-md-12 col-xl-12">
+                <div class="container">
+                    <div id="carouselContent" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner" role="listbox">
+                            <div class="carousel-item active text-center p-4">
+                                 <p>Good hogya</p>
+                            </div>
+                            <div class="carousel-item text-center p-4">
+                                
+                                <p>Thek ha</p>
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselContent" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselContent" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div> --}}
+
         <div class="row mt-5">
             <div class="col-sm-12 col-md-12 col-xl-12">
                 <!--begin::Stats Widget 13-->
@@ -10,7 +36,7 @@
                     <!--begin::Body-->
                     <div class="card-body">
                         <div class="text-inverse-white font-weight-bolder font-25 font-size-h5 mb-2 mt-5 text-center">Current Balance</div>
-                        <div class="font-weight-bold text-inverse-white text-center font-23">${{ auth()->user()->payment->current_balance }}</div>
+                        <div class="font-weight-bold text-inverse-white text-center font-23">${{ auth()->user()->payment ? auth()->user()->payment->current_balance : '0' }}</div>
                     </div>
                     <!--end::Body-->
                 </a>

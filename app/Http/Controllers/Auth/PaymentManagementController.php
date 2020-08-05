@@ -118,7 +118,7 @@ class PaymentManagementController extends Controller
             return redirect()->back()->withFlashDanger(__('You do not have any balance to withdraw.'));
         }
 
-        if ($user->payment->current_balance < $request->withdraw_amount) {
+        if ($request->withdraw_amount > $user->payment->current_balance) {
             return redirect()->back()->withFlashDanger(__('You cannot withdraw amount greater then your current amount.'));
         }
 

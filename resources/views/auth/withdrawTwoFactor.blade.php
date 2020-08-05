@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div><!--form-group-->
-        <button class="btn btn-sm btn-primary float-right" type="submit">@lang('Withdraw')</button>
+        <button class="btn btn-sm btn-primary float-right" type="submit">@lang('Verify')</button>
     {{ Form::close() }}
 </div>
 @endsection

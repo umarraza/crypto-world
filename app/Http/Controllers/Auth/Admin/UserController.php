@@ -176,22 +176,15 @@ class UserController extends Controller
         \DB::beginTransaction();
 
             try {
-                $user = User::find(decrypt($request->id));
-                $payment = Payment::where('user_id', intval(decrypt($request->id)))->first();
 
-                if ($payment)
-                {
-                    $payment->current_balance += $request->deposit_amount;
-                    $payment->payment_date = date('Y-m-d');
-                
-                    if ($user->payment_status == Payment::DEFAULT_BALANCE_ZERO) {
-                        $user->payment_status = Payment::PAID;
-                        $user->save();
-                    }
+                $paymentRequest = PaymentRequest::create([
+                    'user_id' => decrypt($request->id),
+                    'amount' => $request->deposit_amount,
+                    'type' => PaymentRequest::DEPOSIT,
+                    'status' => PaymentRequest::APPROVED,
+                    'date' => date('Y-m-d'),
+                ]);
 
-                    $payment->save();
-                }
-    
             } catch (Exception $e) {
                 \DB::rollBack();
                 throw new GeneralException(__('There was a problem while depositing this amount. Please try again.'));

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,6 +29,9 @@ class HomeController extends Controller
         $userId = Auth::user()->id;
         $userId = encrypt($userId);
 
+        // dd(Notification::select('notification')->get());
+
         return view('dashboard')->withUserId($userId);
+        // return view('dashboard')->withUserId($userId)->withNotifications(Notification::select('notification'));
     }
 }

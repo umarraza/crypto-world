@@ -57,7 +57,8 @@
                             </svg></span><span class="kt-menu__link-text font-17">Access</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
                     <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                         <ul class="kt-menu__subnav">
-                            <li class="kt-menu__item" aria-haspopup="true"><a href="{{ route('admin.user.index') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text font-17">User Mangement</span><span class="kt-menu__link-badge"></a></li>
+                            <li class="kt-menu__item" aria-haspopup="true"><a href="{{ route('admin.user.index') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text font-17">User Management</span><span class="kt-menu__link-badge"></a></li>
+                            <li class="kt-menu__item" aria-haspopup="true"><a href="{{ route('admin.notification.index') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i><span class="kt-menu__link-text font-17">Notification Management</span><span class="kt-menu__link-badge"></a></li>
                         </ul>
                     </div>
                 </li>

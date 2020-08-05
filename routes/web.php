@@ -10,7 +10,7 @@ use App\Http\Controllers\Auth\Admin\UserController;
 /*
  * Global Routes
  * Routes that are used between both frontend users and admin.
- */
+*/
 
 Route::get('/', function () {
     // return view('welcome');
@@ -39,6 +39,10 @@ Route::group(['middleware' => [config('access.users.super_admin'),config('access
     Route::get('home', [HomeController::class, 'index'])->name('home');
     
     Route::resource('user', 'UserController');
+    Route::resource('notification', 'NotificationController');
+
+    Route::get('notification/{notification}/delete', 'NotificationController@destroy')->name('notification.delete');
+
     Route::get('user/{user}/delete', 'UserController@destroy')->name('user.delete');
     Route::get('user/payment/deposit', 'UserController@deposit')->name('payment.deposit');
     Route::post('user/payment/deposit', 'UserController@depositAmount')->name('payment.deposit.store');

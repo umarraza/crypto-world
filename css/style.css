@@ -47,3 +47,9 @@
 .total-amount-boxes-background{
     background: linear-gradient(#eeaeca,#94bbe9);
 }
+
+.carousel-item.active,
+.carousel-item-next,
+.carousel-item-prev{
+    display:block;
+}

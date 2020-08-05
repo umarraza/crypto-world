@@ -41,10 +41,6 @@ class PaymentRequestController extends Controller
 
 
         if ($flag === PaymentRequest::APPROVED) {
-            
-            $payment = Payment::where('user_id', decrypt($request->user_id))->first();
-            $payment->current_balance -= $model->amount;
-            $payment->save();
 
             $model->status = PaymentRequest::APPROVED;
             $model->save();
@@ -53,6 +49,10 @@ class PaymentRequestController extends Controller
         }
 
         if ($flag === PaymentRequest::REJECTED) {
+
+            $payment = Payment::where('user_id', decrypt($request->user_id))->first();
+            $payment->current_balance += $model->amount;
+            $payment->save();
 
             $model->status = PaymentRequest::REJECTED;
             $model->save();
