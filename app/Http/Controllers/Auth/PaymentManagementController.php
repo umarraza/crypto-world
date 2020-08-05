@@ -136,7 +136,7 @@ class PaymentManagementController extends Controller
      */
     public function depositAmount(DepositPaymentRequest $request) {
 
-        if ($request->deposit_amount < 100) {
+        if ($request->deposit_amount < 0) {
             return redirect()->back()->withFlashDanger(__('Minimum amount to deposit is $100.'));
         }
 

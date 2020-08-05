@@ -115,27 +115,34 @@ class PaymentRequest extends Model
         $bcid = auth()->user()->id;
 
         $bitcoin['amount'] = $btc;
-        $bitcoin['sendto'] = $bcid;
-
-        $var = "bitcoin:$bcid?amount=$btc";
-        $bitcoin['code'] =  "<img src=\"https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=$var&choe=UTF-8\" title='' style='width:300px;' />";
-
+     
         $secret = 'ZzsMLGKe162CfA5EcG6j';
 
         $xpub = 'xpub6CgNjrZMcXv2B9LRQamKmqKreBn51CKQ25hzXWMZ6tSXZ9nH1hg1UQsXNsGmEZZjKB5v869KERQyF17deGK2m5Fz2Q4JTjR8wpFgymPqKiY';
         $api_key = '10712c83-d168-4700-862a-ff97883d2463';
         
         $base_url = 'https://kcw.global/kcw/';
-
+        $blockchain_receive_root = "https://api.blockchain.info/";
+        
         $callback_url = $base_url.'ipnbtc?invoice_id='.$paymentRequest->id.'&secret='.$secret;
         
         $parameters = 'xpub=' .$xpub. '&callback=' .urlencode($callback_url). '&key=' .$api_key;
         
-        $response = file_get_contents($base_url . '?' . $parameters);
+        $response = @file_get_contents($blockchain_receive_root. 'v2/receive?' . $parameters);
         
         if (!$response) {
             return false;
         }
+    
+        
+         $response2 = json_decode($response);
+            
+           $sendto = $response2->address;
+           $bitcoin['sendto'] = $sendto;
+
+        $var = "bitcoin:$sendto?amount=$btc";
+        $bitcoin['code'] =  "<img src=\"https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=$var&choe=UTF-8\" title='' style='width:300px;' />";
+dd($response2);
         
         return ['paymentRequest'=>$paymentRequest, 'bitcoin'=>$bitcoin];
     }
