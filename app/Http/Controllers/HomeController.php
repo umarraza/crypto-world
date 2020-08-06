@@ -29,9 +29,12 @@ class HomeController extends Controller
         $userId = Auth::user()->id;
         $userId = encrypt($userId);
 
-        // dd(Notification::select('notification')->get());
+        $notificationText = '';
 
-        return view('dashboard')->withUserId($userId);
-        // return view('dashboard')->withUserId($userId)->withNotifications(Notification::select('notification'));
+        foreach (Notification::all()->pluck('notification') as $notification) {
+            $notificationText = $notificationText.''.$notification;
+        }
+
+        return view('dashboard')->withUserId($userId)->withNotificationText($notificationText);
     }
 }

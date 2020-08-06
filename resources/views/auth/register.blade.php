@@ -102,8 +102,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="btc_address" class="col-md-4 col-form-label">{{ __('BTC Address') }}</label>
-                                <input id="btc_address" type="text" class="form-control @error('btc_address') is-invalid @enderror" name="btc_address" value="{{ old('btc_address') }}" autocomplete="name" autofocus>
+                                <label for="btc_address" class="col-md-4 col-form-label">{{ __('BTC Address') }}</labehomec                            <input id="btc_address" type="text" class="form-control @error('btc_address') is-invalid @enderror" name="btc_address" value="{{ old('btc_address') }}" autocomplete="name" autofocus>
                                 @error('btc_address')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
