@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CronController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\MessageController;
 use App\Http\Controllers\Auth\Admin\UserController;
 
 /*
@@ -38,6 +39,11 @@ Route::group(['middleware' => [config('access.users.super_admin'),config('access
     
     Route::get('home', [HomeController::class, 'index'])->name('home');
     
+    Route::get('inbox', [MessageController::class, 'adminInbox'])->name('inbox');
+    Route::post('admin/message/store', [MessageController::class, 'store'])->name('messages.store');
+    
+    Route::get('messages/user', [MessageController::class, 'getUserMessages'])->name('getMessages');
+
     Route::resource('user', 'UserController');
     Route::resource('notification', 'NotificationController');
 
@@ -61,6 +67,9 @@ Route::group(['middleware' => [config('access.users.super_admin'),config('access
 
 // Customer Routes
 Route::group(['middleware' => [config('access.users.customer_role'),config('access.two_factor_auth')],'prefix' => 'user', 'as' => 'user.','namespace' => 'Auth'], function () {
+
+    Route::get('messages', 'MessageController@userMessages')->name('messages');
+    Route::post('messages/store', 'MessageController@store')->name('messages.store');
 
     Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::get('users/level/{id}', [UserController::class, 'usersByLevel'])->name('user-by-levels');

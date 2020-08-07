@@ -3,16 +3,11 @@
 @section('content')
     <!--Begin::Row-->
     @cannot('view backend')
-
-        {{-- <p class="marquee sliding-notification">
-            <span>{{ $notificationText }} -&nbsp;</span>
-        </p> --}}
     
- 
+        <!-- Promotinal notification -->
         <p class="marquee marquee2 sliding-notification">
             <span>{{ $notificationText }} -&nbsp;</span>
         </p>
-
         <div class="row mt-5">
             <div class="col-sm-12 col-md-12 col-xl-12">
                 <!--begin::Stats Widget 13-->

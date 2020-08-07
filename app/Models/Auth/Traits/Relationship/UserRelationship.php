@@ -10,6 +10,8 @@ use App\Models\TeamBonus;
 use App\Models\Auth\Role;
 use App\Models\PaymentRequest;
 use App\Models\Auth\PasswordHistory;
+use App\Models\Conversation;
+use App\Models\Message;
 
 /**
  * Class UserRelationship.
@@ -53,5 +55,21 @@ trait UserRelationship
     public function roi()
     {
         return $this->hasMany(Roi::class);
+    }
+
+    /**
+     * @return string
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class,'from_user');
+    }
+
+    /**
+     * @return string
+     */
+    public function conversation()
+    {
+        return $this->hasOne(Conversation::class);
     }
 }

@@ -218,7 +218,7 @@ class PaymentManagementController extends Controller
      */
     public function depositHistory() {
         return view('auth.payment.history.deposit')
-            ->withPaymentRequests(Auth::user()->paymentHistory->where('type', PaymentRequest::DEPOSIT));
+            ->withPaymentRequests(Auth::user()->paymentHistory->where('type', PaymentRequest::DEPOSIT)->where('status', PaymentRequest::APPROVED));
     }
 
 
