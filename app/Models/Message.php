@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use DB;
+use App\Models\Conversation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,6 +32,14 @@ class Message extends Model
     }
 
     /**
+     * @return string
+     */
+    public function conversation()
+    {
+        return $this->belongsTo(Conversation::class);
+    }
+
+    /**
      * @param  array  $data
      *
      * @return Message
@@ -41,11 +50,17 @@ class Message extends Model
         DB::beginTransaction();
 
         try {
-            $message = parent::create([
 
+            $thread = Conversation::where('user_id', Auth::user()->id)->first();
+
+            if (empty($thread)) {
+               $thread = Conversation::create(['user_id'=>Auth::user()->id]);
+            }
+
+            $message = parent::create([
                 'to_user' => 1,
                 'from_user' => Auth::user()->id,
-                'conversation_id'=>Auth::user()->conversation->id,
+                'conversation_id'=> $thread->id,
                 'content' => $data['message'],
 
             ]);

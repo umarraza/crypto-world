@@ -2,6 +2,7 @@
 
     <!--begin::Fonts -->
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700"> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" />
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
     <!--end::Fonts -->
 
@@ -24,8 +25,6 @@
     <link href="{{ asset('assets/css/skins/aside/dark.css') }}" rel="stylesheet" type="text/css" />
 
     <!--end::Layout Skins -->
-    <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
-
     <link href="{{ asset('assets/media/logos/favicon.ico') }}" rel="shortcut icon" />
 
     <!--Custom Styles -->

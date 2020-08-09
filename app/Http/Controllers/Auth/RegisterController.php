@@ -10,6 +10,7 @@ use App\User;
 use App\Helpers\BTCAddressValidatorValidator;
 use Illuminate\Support\Arr;
 use App\Exceptions\GeneralException;
+use App\Models\Conversation;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Profile;
 use Illuminate\Foundation\Auth\RegistersUsers;

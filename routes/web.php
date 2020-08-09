@@ -40,9 +40,9 @@ Route::group(['middleware' => [config('access.users.super_admin'),config('access
     Route::get('home', [HomeController::class, 'index'])->name('home');
     
     Route::get('inbox', [MessageController::class, 'adminInbox'])->name('inbox');
-    Route::post('admin/message/store', [MessageController::class, 'store'])->name('messages.store');
+    Route::post('message/store', [MessageController::class, 'storeAdminMessage'])->name('messages.store');
     
-    Route::get('messages/user', [MessageController::class, 'getUserMessages'])->name('getMessages');
+    Route::post('user/messages', [MessageController::class, 'getUserMessages'])->name('getMessages');
 
     Route::resource('user', 'UserController');
     Route::resource('notification', 'NotificationController');

@@ -13,10 +13,18 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        $sql = 'CREATE TABLE `messages` (
+            `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+            `to_user` int(10) unsigned NOT NULL,
+            `from_user` int(10) unsigned NOT NULL,
+            `conversation_id` int(10) unsigned DEFAULT NULL,
+            `content` text NOT NULL,
+            `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+            `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+            PRIMARY KEY (`id`)
+          ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4';
+
+        DB::connection()->getPdo()->exec($sql);
     }
 
     /**

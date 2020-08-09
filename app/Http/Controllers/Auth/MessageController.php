@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\User;
+use Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,9 +31,15 @@ class MessageController extends Controller
      */
     public function userInbox() {
         
-        return view('auth.user.message.inbox')
-            ->withUserMessages(Auth::user()->messages)
-            ->withAdminMessages(Message::where('from_user',1)->get());
+        $messages = Message::where(function($query) {
+            $query->where('from_user', 1)
+                  ->where('to_user', auth()->user()->id);
+        })->orWhere(function($query) {
+            $query->where('from_user',  auth()->user()->id)
+                  ->where('to_user', 1);
+        })->get();
+
+        return view('auth.user.message.inbox')->withMessages($messages);
     }
 
     /**
@@ -43,9 +50,20 @@ class MessageController extends Controller
      */
     public function adminInbox() {
 
-        $conversations = Conversation::all();
-        // dd($conversations);
+        $models = Conversation::all();
 
+        $conversations = [];
+
+        foreach($models as $conversation) {
+        
+            if (!empty($conversation->messages->toArray())) {
+                $conversations[] = [
+                    'id' => $conversation->id,
+                    'user_name' => $conversation->user->full_name,
+                    'message' =>  $conversation->messages->first()->content,
+                ];
+            }
+        }
 
         return view('admin.message.inbox')->withConversations($conversations);
     }
@@ -59,7 +77,31 @@ class MessageController extends Controller
 
         $message = $this->message->store($request->all());
 
-        return redirect()->route('user.messages');
+        $messages = Message::where(function($query) {
+            $query->where('from_user', 1)
+                  ->where('to_user', auth()->user()->id);
+        })->orWhere(function($query) {
+            $query->where('from_user',  auth()->user()->id)
+                  ->where('to_user', 1);
+        })->get();
+
+        return Response::json(['messages'=>$messages], 200);
+    }
+
+    public function storeAdminMessage(Request $request) {
+
+        $conversation = Conversation::find(intval($request->conversation_id));
+
+        $message = Message::create([
+            'to_user' => $conversation->user->id,
+            'from_user' => Auth::user()->id,
+            'conversation_id'=> $conversation->id,
+            'content' => $request->message,
+        ]);
+
+        $messages = Message::where('conversation_id', intval($request->conversation_id))->get();
+
+        return Response::json(['messages'=>$messages], 200);
     }
 
 
@@ -72,16 +114,24 @@ class MessageController extends Controller
      */
     public function getUserMessages(Request $request) {
 
+        $conversation = find(intval($request->id));
 
-        $user = User::find($request->user_id);
+        $messages = Message::where('conversation_id', intval($request->id))->get();
 
-        $conversations = Conversation::all();
+        // $messages = Message::where(function($query) {
+        //     $query->where('from_user', 1)
+        //           ->where('to_user', auth()->user()->id);
+        // })->orWhere(function($query) {
+        //     $query->where('from_user',  auth()->user()->id)
+        //           ->where('to_user', 1);
+        // })->get();
 
-        $adminMessages = Message::where('from_user', Auth::user()->id)->where('to_user', $user->id)->get();
-
-        return view('admin.message.inbox')
-            ->withConversations($conversations)
-            ->withUserMessages($user->messages)
-            ->withAdminMessages($adminMessages);
+        
+        // ->orWhere(function($query) {
+        //     $query->where('from_user',  auth()->user()->id)
+        //     ->where('to_user', 1);
+        // })->get();
+        
+        return Response::json(['messages'=>$messages], 200);
     }
 }
