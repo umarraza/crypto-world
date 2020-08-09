@@ -40,7 +40,7 @@
                 </div>
                 <div class="mesgs">
                     <div class="msg_history">
-                        @foreach ($userMessages as $message)
+                        {{-- @foreach ($userMessages as $message)
                             <div class="incoming_msg mt-5">
                                 <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
                                 <div class="received_msg">
@@ -50,8 +50,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
-                    
+                        @endforeach --}}
                     
                         @foreach ($adminMessages as $message)
                             <div class="outgoing_msg">

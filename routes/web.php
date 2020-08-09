@@ -68,7 +68,7 @@ Route::group(['middleware' => [config('access.users.super_admin'),config('access
 // Customer Routes
 Route::group(['middleware' => [config('access.users.customer_role'),config('access.two_factor_auth')],'prefix' => 'user', 'as' => 'user.','namespace' => 'Auth'], function () {
 
-    Route::get('messages', 'MessageController@userMessages')->name('messages');
+    Route::get('messages', 'MessageController@userInbox')->name('messages');
     Route::post('messages/store', 'MessageController@store')->name('messages.store');
 
     Route::get('home', [HomeController::class, 'index'])->name('home');

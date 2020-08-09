@@ -21,7 +21,7 @@
     <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
         @include('layouts.includes.header')
         <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-            <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+            <div class="kt-container kt-container--fluid  kt-grid__item kt-grid__item--fluid" id="app">
                 @yield('content')
             </div>
         </div>

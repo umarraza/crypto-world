@@ -13,7 +13,8 @@
 
     <!-- begin:: Header Topbar -->
     <div class="kt-header__topbar">
-
+        <button class="btn btn-parimary float-left" id="open-sidebar">☰</button>    
+        <button class="btn btn-parimary" id="close-sidebar">X</button>    
         <!--end: Notifications -->
 
         <div class="kt-header__topbar-item kt-header__topbar-item--user">

@@ -22,20 +22,39 @@ class MessageController extends Controller
     }
 
 
-    public function userMessages() {
+    /**
+     * @param  void
+     *
+     * @return mixed
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function userInbox() {
         
-        return view('auth.message.user-messages')
+        return view('auth.user.message.inbox')
             ->withUserMessages(Auth::user()->messages)
             ->withAdminMessages(Message::where('from_user',1)->get());
     }
 
+    /**
+     * @param  void
+     *
+     * @return mixed
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function adminInbox() {
 
         $conversations = Conversation::all();
+        // dd($conversations);
+
 
         return view('admin.message.inbox')->withConversations($conversations);
     }
 
+    /**
+     * @param Illuminate\Http\Request $request
+     *
+     * @return mixed
+     */
     public function store(Request $request) {
 
         $message = $this->message->store($request->all());
@@ -43,6 +62,14 @@ class MessageController extends Controller
         return redirect()->route('user.messages');
     }
 
+
+    /**
+     * @param Illuminate\Http\Request $request
+     *
+     * @return mixed
+     * @throws \App\Exceptions\GeneralException
+     * @throws \Throwable
+     */
     public function getUserMessages(Request $request) {
 
 
