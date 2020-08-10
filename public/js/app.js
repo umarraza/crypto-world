@@ -1960,53 +1960,63 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['data_conversations', 'data_auth_id'],
-  beforeMount: function beforeMount() {
-    var vm = this;
-    $.each(this.data_conversations, function (index, conversation) {
-      vm.conversations.push(conversation);
-    });
+  props: ['data_auth_id'],
+  beforeMount: function beforeMount() {//    
   },
   data: function data() {
     return {
+      isSlected: false,
       message: '',
       messages: [],
-      conversations: []
+      conversations: [],
+      conversation_id: null,
+      viewChangeStatus: false
     };
   },
+  mounted: function mounted() {
+    this.getConversations();
+  },
   methods: {
-    onSubmit: function onSubmit(evt) {
-      evt.preventDefault();
+    onSubmit: function onSubmit() {
       var vm = this;
       axios.post('/admin/message/store', {
         message: this.message,
         conversation_id: $('.conversation_id').val()
       }).then(function (response) {
         vm.messages = response.data.messages;
-      })["catch"](function (error) {
-        console.log(error);
+      })["catch"](function (error) {// 
       });
+      vm.message = '';
     },
-    getConversationMessages: function getConversationMessages(e) {
+    scrollChat: function scrollChat() {
+      $('#admin_scrolling_div').scrollTop($('#admin_scrolling_div')[0].scrollHeight);
+    },
+    getConversationMessages: function getConversationMessages(id) {
+      this.isSlected = true;
+      this.conversation_id = id;
       var vm = this;
       axios.post('/admin/user/messages', {
-        id: e.target.id
+        id: id
       }).then(function (response) {
         vm.messages = response.data.messages;
-      })["catch"](function (error) {
-        console.log(error);
+      })["catch"](function (error) {// 
+      }); // let time_out1 = setTimeout(this.getConversationMessages(this.conversation_id),60000);
+    },
+    getConversations: function getConversations() {
+      var vm = this;
+      axios.get('/admin/conversations/').then(function (response) {
+        vm.conversations = [];
+        $.each(response.data.conversations, function (index, conversation) {
+          vm.conversations.push(conversation);
+        });
+      })["catch"](function (error) {// 
       });
+      var time_out2 = setTimeout(this.getConversations, 60000);
     }
   },
-  computed: {// setDateFormat(date) {
-    //     const d = new Date(date)
-    //     const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d)
-    //     const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d)
-    //     const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d)
-    //     return "`${da}-${mo}-${ye}`";
-    // }
+  updated: function updated(event) {
+    this.viewChangeStatus === true ? this.viewChangeStatus = false : this.scrollChat();
   }
 });
 
@@ -2057,33 +2067,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['data_messages', 'data_auth_id'],
-  beforeMount: function beforeMount() {
-    var vm = this;
-    $.each(this.data_messages, function (index, message) {
-      vm.messages.push(message);
-    });
+  props: ['data_auth_id'],
+  beforeMount: function beforeMount() {// 
   },
   data: function data() {
     return {
       messages: [],
-      message: ''
+      message: '',
+      viewChangeStatus: false
     };
   },
+  created: function created() {
+    this.getUserMessages();
+  },
   methods: {
-    onSubmit: function onSubmit(evt) {
-      evt.preventDefault();
+    onSubmit: function onSubmit() {
       var vm = this;
       axios.post('/user/messages/store', {
         message: this.message
       }).then(function (response) {
         vm.messages = response.data.messages;
-      })["catch"](function (error) {
-        console.log(error);
+      })["catch"](function (error) {// 
       });
+      vm.message = '';
+    },
+    scrollChat: function scrollChat() {
+      $('#scrolling_div').scrollTop($('#scrolling_div')[0].scrollHeight);
+    },
+    getUserMessages: function getUserMessages() {
+      var vm = this;
+      axios.get('/user/messages/all').then(function (response) {
+        vm.messages = [];
+        $.each(response.data.messages, function (index, message) {
+          vm.messages.push(message);
+        });
+      })["catch"](function (error) {// 
+      });
+      setTimeout(this.getUserMessages, 60000);
     }
+  },
+  updated: function updated(event) {
+    this.viewChangeStatus === true ? this.viewChangeStatus = false : this.scrollChat();
   }
 });
 
@@ -37646,10 +37671,17 @@ var render = function() {
                 "div",
                 {
                   key: conversation.id,
-                  staticClass: "chat_list",
+                  class: {
+                    active_chat: conversation.id == _vm.conversation_id,
+                    chat_list: true
+                  },
                   staticStyle: { cursor: "pointer" },
                   attrs: { id: conversation.id },
-                  on: { click: _vm.getConversationMessages }
+                  on: {
+                    click: function($event) {
+                      return _vm.getConversationMessages(conversation.id)
+                    }
+                  }
                 },
                 [
                   _c("div", { staticClass: "chat_people" }, [
@@ -37679,14 +37711,10 @@ var render = function() {
                       [
                         _c("h5", { attrs: { id: conversation.id } }, [
                           _vm._v(_vm._s(conversation.user_name)),
-                          _c(
-                            "span",
-                            {
-                              staticClass: "chat_date",
-                              attrs: { id: conversation.id }
-                            },
-                            [_vm._v("Dec 25")]
-                          )
+                          _c("span", {
+                            staticClass: "chat_date",
+                            attrs: { id: conversation.id }
+                          })
                         ]),
                         _vm._v(" "),
                         _c("p", { attrs: { id: conversation.id } }, [
@@ -37705,11 +37733,14 @@ var render = function() {
         _c("div", { staticClass: "mesgs" }, [
           _c(
             "div",
-            { staticClass: "msg_history" },
+            {
+              staticClass: "msg_history",
+              attrs: { id: "admin_scrolling_div" }
+            },
             _vm._l(_vm.messages, function(message) {
               return _c("div", { key: message.id }, [
                 message.from_user !== _vm.data_auth_id
-                  ? _c("div", { staticClass: "incoming_msg" }, [
+                  ? _c("div", { staticClass: "incoming_msg pt-5" }, [
                       _vm._m(0, true),
                       _vm._v(" "),
                       _c("input", {
@@ -37720,7 +37751,19 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "received_msg" }, [
                         _c("div", { staticClass: "received_withd_msg" }, [
-                          _c("p", [_vm._v(_vm._s(message.content))])
+                          _c("p", [_vm._v(_vm._s(message.content))]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "time_date" }, [
+                            _vm._v(
+                              " " +
+                                _vm._s(
+                                  message.created_at.minutes_ago +
+                                    " | " +
+                                    message.created_at.date
+                                ) +
+                                " "
+                            )
+                          ])
                         ])
                       ])
                     ])
@@ -37729,7 +37772,15 @@ var render = function() {
                         _c("p", [_vm._v(_vm._s(message.content))]),
                         _vm._v(" "),
                         _c("span", { staticClass: "time_date" }, [
-                          _vm._v(" 11:01 AM | June 9 ")
+                          _vm._v(
+                            " " +
+                              _vm._s(
+                                message.created_at.minutes_ago +
+                                  " | " +
+                                  message.created_at.date
+                              ) +
+                              " "
+                          )
                         ])
                       ])
                     ])
@@ -37738,35 +37789,58 @@ var render = function() {
             0
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "type_msg" }, [
-            _c("form", { on: { submit: _vm.onSubmit } }, [
-              _c("div", { staticClass: "input_msg_write" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.message,
-                      expression: "message"
-                    }
-                  ],
-                  staticClass: "write_msg",
-                  attrs: { type: "text", placeholder: "Type a message" },
-                  domProps: { value: _vm.message },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+          _vm.isSlected === true
+            ? _c("div", { staticClass: "type_msg" }, [
+                _c("div", { staticClass: "input_msg_write" }, [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.message,
+                        expression: "message"
                       }
-                      _vm.message = $event.target.value
+                    ],
+                    staticClass: "form-control",
+                    attrs: { placeholder: "Type a message" },
+                    domProps: { value: _vm.message },
+                    on: {
+                      keyup: function($event) {
+                        if (
+                          !$event.type.indexOf("key") &&
+                          _vm._k(
+                            $event.keyCode,
+                            "enter",
+                            13,
+                            $event.key,
+                            "Enter"
+                          )
+                        ) {
+                          return null
+                        }
+                        if (
+                          $event.ctrlKey ||
+                          $event.shiftKey ||
+                          $event.altKey ||
+                          $event.metaKey
+                        ) {
+                          return null
+                        }
+                        return _vm.onSubmit($event)
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.message = $event.target.value
+                      }
                     }
-                  }
-                }),
-                _vm._v(" "),
-                _vm._m(1)
+                  }),
+                  _vm._v(" "),
+                  _vm._m(1)
+                ])
               ])
-            ])
-          ])
+            : _vm._e()
         ])
       ])
     ])
@@ -37792,7 +37866,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c(
       "button",
-      { staticClass: "msg_send_btn", attrs: { type: "submit" } },
+      { staticClass: "msg_send_btn", attrs: { type: "button" } },
       [
         _c("i", {
           staticClass: "fa fa-paper-plane-o",
@@ -37829,16 +37903,27 @@ var render = function() {
         _c("div", { staticClass: "mesgs user_messages" }, [
           _c(
             "div",
-            { staticClass: "msg_history" },
+            { staticClass: "msg_history", attrs: { id: "scrolling_div" } },
             _vm._l(_vm.messages, function(message) {
               return _c("div", { key: message.id }, [
                 message.from_user !== _vm.data_auth_id
-                  ? _c("div", { staticClass: "incoming_msg" }, [
+                  ? _c("div", { staticClass: "incoming_msg pt-5" }, [
                       _vm._m(0, true),
                       _vm._v(" "),
                       _c("div", { staticClass: "received_msg" }, [
                         _c("div", { staticClass: "received_withd_msg" }, [
-                          _c("p", [_vm._v(_vm._s(message.content))])
+                          _c("p", [_vm._v(_vm._s(message.content))]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "time_date" }, [
+                            _vm._v(
+                              " " +
+                                _vm._s(
+                                  message.created_at.minutes_ago +
+                                    " | " +
+                                    message.created_at.date
+                                )
+                            )
+                          ])
                         ])
                       ])
                     ])
@@ -37847,7 +37932,14 @@ var render = function() {
                         _c("p", [_vm._v(_vm._s(message.content))]),
                         _vm._v(" "),
                         _c("span", { staticClass: "time_date" }, [
-                          _vm._v(" 11:01 AM    |    June 9")
+                          _vm._v(
+                            " " +
+                              _vm._s(
+                                message.created_at.minutes_ago +
+                                  " | " +
+                                  message.created_at.date
+                              )
+                          )
                         ])
                       ])
                     ])
@@ -37857,32 +37949,60 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("div", { staticClass: "type_msg" }, [
-            _c("form", { on: { submit: _vm.onSubmit } }, [
-              _c("div", { staticClass: "input_msg_write" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.message,
-                      expression: "message"
-                    }
-                  ],
-                  staticClass: "write_msg",
-                  attrs: { type: "text", placeholder: "Type a message" },
-                  domProps: { value: _vm.message },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.message = $event.target.value
-                    }
+            _c("div", { staticClass: "input_msg_write" }, [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.message,
+                    expression: "message"
                   }
-                }),
-                _vm._v(" "),
-                _vm._m(1)
-              ])
+                ],
+                staticClass: "form-control",
+                attrs: { placeholder: "Type a message" },
+                domProps: { value: _vm.message },
+                on: {
+                  keyup: function($event) {
+                    if (
+                      !$event.type.indexOf("key") &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                    ) {
+                      return null
+                    }
+                    if (
+                      $event.ctrlKey ||
+                      $event.shiftKey ||
+                      $event.altKey ||
+                      $event.metaKey
+                    ) {
+                      return null
+                    }
+                    return _vm.onSubmit($event)
+                  },
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.message = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "msg_send_btn",
+                  attrs: { type: "button" },
+                  on: { click: _vm.onSubmit }
+                },
+                [
+                  _c("i", {
+                    staticClass: "fa fa-paper-plane-o",
+                    attrs: { "aria-hidden": "true" }
+                  })
+                ]
+              )
             ])
           ])
         ])
@@ -37903,21 +38023,6 @@ var staticRenderFns = [
         }
       })
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      { staticClass: "msg_send_btn", attrs: { type: "submit" } },
-      [
-        _c("i", {
-          staticClass: "fa fa-paper-plane-o",
-          attrs: { "aria-hidden": "true" }
-        })
-      ]
-    )
   }
 ]
 render._withStripped = true

@@ -43,6 +43,7 @@ Route::group(['middleware' => [config('access.users.super_admin'),config('access
     Route::post('message/store', [MessageController::class, 'storeAdminMessage'])->name('messages.store');
     
     Route::post('user/messages', [MessageController::class, 'getUserMessages'])->name('getMessages');
+    Route::get('conversations', [MessageController::class, 'getConversations']);
 
     Route::resource('user', 'UserController');
     Route::resource('notification', 'NotificationController');
@@ -69,6 +70,7 @@ Route::group(['middleware' => [config('access.users.super_admin'),config('access
 Route::group(['middleware' => [config('access.users.customer_role'),config('access.two_factor_auth')],'prefix' => 'user', 'as' => 'user.','namespace' => 'Auth'], function () {
 
     Route::get('messages', 'MessageController@userInbox')->name('messages');
+    Route::get('messages/all', 'MessageController@getMessages');
     Route::post('messages/store', 'MessageController@store')->name('messages.store');
 
     Route::get('home', [HomeController::class, 'index'])->name('home');

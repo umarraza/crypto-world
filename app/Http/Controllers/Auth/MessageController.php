@@ -23,7 +23,7 @@ class MessageController extends Controller
     }
 
 
-    /**
+    /** 
      * @param  void
      *
      * @return mixed
@@ -31,15 +31,11 @@ class MessageController extends Controller
      */
     public function userInbox() {
         
-        $messages = Message::where(function($query) {
-            $query->where('from_user', 1)
-                  ->where('to_user', auth()->user()->id);
-        })->orWhere(function($query) {
-            $query->where('from_user',  auth()->user()->id)
-                  ->where('to_user', 1);
-        })->get();
+        return view('auth.user.message.inbox')->withMessages(auth()->user()->getMessages());
+    }
 
-        return view('auth.user.message.inbox')->withMessages($messages);
+    public function getMessages() {
+        return response()->json(['messages'=>Auth::user()->getMessages()]);
     }
 
     /**
@@ -50,22 +46,11 @@ class MessageController extends Controller
      */
     public function adminInbox() {
 
-        $models = Conversation::all();
+        return view('admin.message.inbox')->withConversations(Auth::user()->conversations());
+    }
 
-        $conversations = [];
-
-        foreach($models as $conversation) {
-        
-            if (!empty($conversation->messages->toArray())) {
-                $conversations[] = [
-                    'id' => $conversation->id,
-                    'user_name' => $conversation->user->full_name,
-                    'message' =>  $conversation->messages->first()->content,
-                ];
-            }
-        }
-
-        return view('admin.message.inbox')->withConversations($conversations);
+    public function getConversations() {
+        return response()->json(['conversations'=>Auth::user()->conversations()]);
     }
 
     /**
@@ -77,33 +62,15 @@ class MessageController extends Controller
 
         $message = $this->message->store($request->all());
 
-        $messages = Message::where(function($query) {
-            $query->where('from_user', 1)
-                  ->where('to_user', auth()->user()->id);
-        })->orWhere(function($query) {
-            $query->where('from_user',  auth()->user()->id)
-                  ->where('to_user', 1);
-        })->get();
-
-        return Response::json(['messages'=>$messages], 200);
+        return Response::json(['messages'=>Auth::user()->getMessages()], 200);
     }
 
     public function storeAdminMessage(Request $request) {
 
-        $conversation = Conversation::find(intval($request->conversation_id));
+        $this->message->storeAdminMessage($request->all());
 
-        $message = Message::create([
-            'to_user' => $conversation->user->id,
-            'from_user' => Auth::user()->id,
-            'conversation_id'=> $conversation->id,
-            'content' => $request->message,
-        ]);
-
-        $messages = Message::where('conversation_id', intval($request->conversation_id))->get();
-
-        return Response::json(['messages'=>$messages], 200);
+        return Response::json(['messages'=>$this->message->getConversationMessages(intval($request->conversation_id))], 200);
     }
-
 
     /**
      * @param Illuminate\Http\Request $request
@@ -114,24 +81,6 @@ class MessageController extends Controller
      */
     public function getUserMessages(Request $request) {
 
-        $conversation = find(intval($request->id));
-
-        $messages = Message::where('conversation_id', intval($request->id))->get();
-
-        // $messages = Message::where(function($query) {
-        //     $query->where('from_user', 1)
-        //           ->where('to_user', auth()->user()->id);
-        // })->orWhere(function($query) {
-        //     $query->where('from_user',  auth()->user()->id)
-        //           ->where('to_user', 1);
-        // })->get();
-
-        
-        // ->orWhere(function($query) {
-        //     $query->where('from_user',  auth()->user()->id)
-        //     ->where('to_user', 1);
-        // })->get();
-        
-        return Response::json(['messages'=>$messages], 200);
+        return Response::json(['messages'=>Message::where('conversation_id', intval($request->id))->get()], 200);
     }
 }

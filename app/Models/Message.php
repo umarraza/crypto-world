@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use DB;
+use Carbon;
 use App\Models\Conversation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,13 @@ class Message extends Model
      * @var string
      */
     protected $table = 'messages';
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['created_at', 'updated_at'];
 
     /**
      * The attributes that are mass assignable.
@@ -64,6 +72,7 @@ class Message extends Model
                 'content' => $data['message'],
 
             ]);
+
         
         } catch (Exception $e) {
             DB::rollBack();
@@ -72,6 +81,64 @@ class Message extends Model
         }
 
         DB::commit();
+
         return $message;
+    }
+
+    /**
+     * @param App\Models\Conversation $conversation
+     *
+     * @return mixed
+     * @throws \App\Exceptions\GeneralException
+     * @throws \Throwable
+     */
+    public function storeAdminMessage(array $data = []) {
+
+        DB::beginTransaction();
+        try {
+
+            $conversation = Conversation::find(intval($data['conversation_id']));
+
+            $message = parent::create([
+                'to_user' => $conversation->user->id,
+                'from_user' => Auth::user()->id,
+                'conversation_id'=> $conversation->id,
+                'content' => $data['message'],
+            ]);
+
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw new GeneralException(__('There was a problem while sending message. Please try again.'));
+        }
+        DB::commit();
+
+        return $message;
+    }
+
+    /**
+     * @param App\Models\Conversation $id
+     *
+     * @return Illuminate\Support\Collection
+     */
+    public function getConversationMessages($id) {
+
+        return parent::where('conversation_id', intval($id))->get();
+    }
+
+     /**
+     * Get the messages' created_at formated value.
+     *
+     * @param  string  $value
+     * @return array
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        $date = Carbon\Carbon::parse($value);
+
+        return [
+            'minutes_ago' => $date->diffForHumans(),
+            'date' => $date->toFormattedDateString()
+        ];
     }
 }

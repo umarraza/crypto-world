@@ -7,7 +7,7 @@
 
 <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
     <div class="container">
-        <user-inbox :data_messages="{{ json_encode($messages) }}" :data_auth_id="{{ json_encode(auth()->user()->id) }}"></user-inbox>
+        <user-inbox :data_auth_id="{{ json_encode(auth()->user()->id) }}"></user-inbox>
     </div>
 </div>
 <!-- end:: Content -->

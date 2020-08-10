@@ -6,8 +6,10 @@ use DB;
 use App\User;
 use Carbon\Carbon;
 use App\Models\Payment;
+use App\Models\Message;
 use App\Models\TeamBonus;
 use App\Models\Auth\Role;
+use App\Models\Conversation;
 use Illuminate\Http\Request;
 use App\Models\PaymentRequest;
 use Illuminate\Support\Facades\Auth;
@@ -347,5 +349,45 @@ trait UserMethod
                     ->get();
             break;
         }
+    }
+
+    /**
+     * @param void
+     *
+     * @return Illuminate\Support\Collection
+     */
+    public function getMessages() {
+        
+        return Message::where(function($query) {
+            $query->where('from_user', 1) // where admin has sent messages to user
+                ->where('to_user', $this->id);
+        })->orWhere(function($query) {
+            $query->where('from_user',  $this->id) // where user has sent messages to admin
+                ->where('to_user', 1);
+        })->get();
+    }
+
+    /**
+     * @param void
+     *
+     * @return Illuminate\Support\Collection
+     */
+    public function conversations() {
+        
+        $models = Conversation::all();
+
+        $conversations = array();
+
+        foreach($models as $conversation) {
+
+            if (!empty($conversation->messages->toArray())) {
+                $conversations[] = [
+                    'id' => $conversation->id,
+                    'user_name' => $conversation->user->full_name,
+                    'message' =>  $conversation->messages->last()->content,
+                ];
+            }
+        }
+        return $conversations;
     }
 }
