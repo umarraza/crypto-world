@@ -85,8 +85,9 @@ class PaymentManagementController extends Controller
         // $confirmations = $_GET['confirmations'];
         // $value_in_btc = $_GET['value'] / 100000000;
 
-        $trx_hash = $_GET['transaction_hash'];
-        Storage::put('btcresponse.txt', json_encode($confirmations));
+        // $trx_hash = $_GET['transaction_hash'];
+
+        Storage::put('btcresponse.txt', json_encode($invoice_id));
 
         // if response 200, change deposit status
     }

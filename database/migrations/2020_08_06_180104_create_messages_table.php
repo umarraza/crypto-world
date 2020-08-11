@@ -24,11 +24,8 @@ class CreateMessagesTable extends Migration
             PRIMARY KEY (`id`),
             KEY `to_user` (`to_user`),
             KEY `from_user` (`from_user`),
-            KEY `conversation_id` (`conversation_id`),
-            CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`to_user`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-            CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`from_user`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-            CONSTRAINT `messages_ibfk_3` FOREIGN KEY (`conversation_id`) REFERENCES `conversations` (`id`) ON DELETE CASCADE
-          ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4';
+            KEY `conversation_id` (`conversation_id`)
+          ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4';
 
         DB::connection()->getPdo()->exec($sql);
     }

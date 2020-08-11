@@ -19,6 +19,7 @@
                         <tr>
                             <th>@lang('Name')</th>
                             <th>@lang('Amount')</th>
+                            <th>@lang('Address')</th>
                             <th>@lang('Date')</th>
                             <th>@lang('Status')</th>
                             <th>@lang('Action')</th>
@@ -29,6 +30,7 @@
                         <tr>
                             <td>{{ $request->user->name }}</td>
                             <td>${{ $request->amount }}</td>
+                            <td>${{ $request->user->block_chain_address }}</td>
                             <td>{{ $request->date }}</td>
                             <td>{!! $request->status_label !!}</td>
                             <td>
