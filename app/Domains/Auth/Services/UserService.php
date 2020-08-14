@@ -127,14 +127,7 @@ class UserService extends BaseService
             throw new GeneralException(__('There was a problem creating this user. Please try again.'));
         }
 
-        // event(new UserCreated($user));
-
         DB::commit();
-
-        // They didn't want to auto verify the email, but do they want to send the confirmation email to do so?
-        // if (! isset($data['email_verified']) && isset($data['send_confirmation_email']) && $data['send_confirmation_email'] === '1') {
-        //     $user->sendEmailVerificationNotification();
-        // }
 
         return $user;
     }

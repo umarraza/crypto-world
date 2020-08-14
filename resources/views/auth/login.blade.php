@@ -77,13 +77,6 @@
                 </div>
             </form>
         </div>
-        {{-- <div class="kt-login__account">
-            <span class="kt-login__account-msg">
-                Don't have an account yet ?
-            </span>
-            &nbsp;&nbsp;
-            <a href="{{ route('register') }}" class="kt-login__account-link">Sign Up!</a>
-        </div> --}}
     </div>
 </div>
 @endsection

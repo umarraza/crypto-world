@@ -95,12 +95,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // $isValidAddress = BTCAddressValidatorValidator::isValid($data['btc_address']);
-        
-        // if (!$isValidAddress) {
-        //     return redirect()->back()->withErrors('Invalid BTC Address, Please enter valid bitcoin address','invalid btc');
-        // }
-
         DB::beginTransaction();
 
         $index = 0;     

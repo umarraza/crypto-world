@@ -14,7 +14,7 @@
         </div>
         <div class="kt-portlet__body">
             <div class="users-table-container">
-                <table class="table table-striped- table-bordered table-hover table-checkable table-data_table" >
+                <table class="table table-striped- table-bordered table-hover table-checkable table-admin_tables" >
                     <thead>
                         <tr>
                             <th>@lang('Name')</th>
