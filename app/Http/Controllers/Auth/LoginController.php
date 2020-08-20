@@ -95,17 +95,17 @@ class LoginController extends Controller
      *
      * @return void
      */
-    protected function authenticated(Request $request, $user)
-    {
-        if (! $user->isActive()) {
-            auth()->logout();
+    // protected function authenticated(Request $request, $user)
+    // {
+    //     if (! $user->isActive()) {
+    //         auth()->logout();
 
-            return redirect()->route('login')->withFlashDanger(__('Your account has been deactivated.'));
-        }
+    //         return redirect()->route('login')->withFlashDanger(__('Your account has been deactivated.'));
+    //     }
         
-        $user->generateTwoFactorCode();
-        $user->notify(new TwoFactorCode());
-    }
+    //     $user->generateTwoFactorCode();
+    //     $user->notify(new TwoFactorCode());
+    // }
 
      /**
      * Get the login username or email to be used by the controller.
