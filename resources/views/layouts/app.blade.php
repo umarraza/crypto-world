@@ -17,15 +17,28 @@
 
 </head>
 <body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
-    @include('layouts.includes.sidebar')
-    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
-        @include('layouts.includes.header')
-        <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
-            <div class="kt-container kt-container--fluid  kt-grid__item kt-grid__item--fluid" id="app">
-                @yield('content')
-            </div>
-        </div>
-    </div>
+		<!-- begin:: Header Mobile -->
+        @include('layouts.includes.mobile-header')
+		<!-- end:: Header Mobile -->
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+				<!-- begin:: Aside -->
+                @include('layouts.includes.sidebar')
+				<!-- end:: Aside -->
+				<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+					<!-- begin:: Header -->
+                    @include('layouts.includes.header')
+					<!-- end:: Header -->
+					<div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+						<!-- begin:: Content -->
+						<div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+                            @yield('content')
+						</div>
+						<!-- end:: Content -->
+					</div>
+				</div>
+			</div>
+		</div>
     <!-- Include scripts -->
     @include('layouts.includes.scripts')
     @include('layouts.includes.partials.messages')
